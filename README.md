@@ -11,9 +11,9 @@
 
 
 ### Vision
-- ![An image of project script](READMEImages/script.jpg)
+![An image of project script](READMEImages/script.jpg)
 
-- ![An image of moodboard](READMEImages/moodboard.jpg)
+![An image of moodboard](READMEImages/moodboard.jpg)
 
 
 ---
