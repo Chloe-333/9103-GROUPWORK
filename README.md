@@ -1,9 +1,9 @@
 # 9103-GROUPWORK
 # Final Project Pitch
 ## Inspirations
-[Inspiration link1](https://www.tiktok.com/@projecthailmary/video/7620935910770707743?is_from_webapp=1&sender_device=pc&web_id=7627300015068923409)
+[Inspiration link1](https://www.tiktok.com/@gaabz.drop/video/7637272522060287239?q=Jarvis&t=1778729950655)
     - *Link 2*
-[Inspiration link2](https://www.tiktok.com/@gaabz.drop/video/7637272522060287239?is_from_webapp=1&sender_device=pc&web_id=7627300015068923409)
+[Inspiration link2](https://www.tiktok.com/@projecthailmary/video/7620935910770707743?q=Project%20Hail%20Mary%20Rocky&t=1778729762426)
 
 
 ## Part 1: **Project Direction**
