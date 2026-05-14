@@ -11,10 +11,8 @@
 
 
 ### Vision
-- **Pictures**
-    - *Picture 1*
 ![An image of project script](READMEImages/script.jpg)
-    - *Picture 2*
+
 ![An image of moodboard](READMEImages/moodboard.jpg)
 
 
@@ -26,10 +24,9 @@
 ### Mechanic 1 — *Audio*
 The audio mechanic drives the emotional atmosphere of the piece through two layers of sound. After entering the page, a gentle ambient track plays automatically, establishing a neutral mood. When the user selects an emotion from happiness, sadness, anger and fear, the background music transitions immediately to a corresponding track that reflects the emotional state. Additionally, when the user hovers over the digital pet, a unique sound effect is triggered, with each emotion producing a distinctly different response. 
 
-- **Pictures**
-    - *Picture 1*
+
 ![An image of audio example 1](READMEImages/audioexample1.jpg)
-    - *Picture 2*
+
 ![An image of audio example 2](READMEImages/audioexample2.jpg)
 
 ### Mechanic 2 — *Time-based*
@@ -47,8 +44,7 @@ Mouse interaction can also create connections between users and organisms. When 
 
 This mechanism supports the project's concept of emotional expression and interaction by allowing users to influence the organism's emotions and responses in real time.
 
-- **Pictures**
-    - *Picture 1*
+
 ![An image of userinput example](READMEImages/userinput.jpg)
 
 ---
