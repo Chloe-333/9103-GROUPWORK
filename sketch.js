@@ -1,6 +1,12 @@
 
 let yoff = 0.0;
+let baseRadius = 250;
+
 let circles = [];
+
+let repelFactor = 0; // 0 = calm, 1 = full cower
+let flinchTimer = 0; // controls the quick flinch pulse
+
 function setup(){
   createCanvas(windowWidth, windowHeight);
   colorMode (HSB, 360, 100, 100, 100);
@@ -35,13 +41,14 @@ function setup(){
 }
 
 //this function adds radiant gradient fill to the elements
+// tutorial to gradient: https://www.youtube.com/watch?v=-MUOweQ6wac
 function radialGradient(sX, sY, sR, eX, eY, eR, colorS, colorE, colorM){
   let gradient = drawingContext.createRadialGradient(
     sX, sY, sR, eX, eY, eR
   );
-  gradient.addColorStop(0, colorS);     //Start colour: Lavender
-  gradient.addColorStop(0.5, colorM);     //Mid colour: Salmon Pink
-  gradient.addColorStop(1, colorE);     //End colour: Cyan
+  gradient.addColorStop(0, colorS);     //Start colour = Lavender
+  gradient.addColorStop(0.5, colorM);     //Mid colour = Salmon Pink
+  gradient.addColorStop(1, colorE);     //End colour = Cyan
  
   drawingContext.fillStyle = gradient;
 }
@@ -50,10 +57,12 @@ function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
 
+//triggers bubbles
 function mouseDragged() {
   spawnCircle(mouseX, mouseY);
 }
 
+//creates bubbles to denote joy
 function spawnCircle(x, y) {
   circles.push({
     x: windowWidth/2,
@@ -72,14 +81,34 @@ function draw(){
   radialGradient(
     windowWidth/2, windowHeight/1.7, 100,
     windowWidth/2, windowHeight/1.7, 800,
-    color(261, 30, 50),     //Lavender: end colour
-    color(171, 35, 94),     //Cyan: start colour
-    color(5, 47, 99),     //Salmon pink: Middle colour
+    color(261, 30, 50),     //Lavender = end colour
+    color(171, 35, 94),     //Cyan = start colour
+    color(5, 47, 99),     //Salmon pink = Middle colour
   );
 
   //background
   rect(windowWidth/2, windowHeight/2, windowWidth, windowHeight)
 
+// mouse hovering parameters
+let dx = mouseX - windowWidth/2;
+let dy = mouseY - windowHeight/1.7;
+let dist = sqrt(dx * dx + dy * dy);
+
+let hoverThreshold = 300; // how close mouse needs to be
+let targetRepel = dist < hoverThreshold ? map(dist, 0, hoverThreshold, 1, 0) : 0;
+
+if (targetRepel > 0.1 && repelFactor < 0.1) {
+    flinchTimer = 15; // frames of sharp flinch
+  }
+  if (flinchTimer > 0) {
+    repelFactor = min(repelFactor + 0.3, 1.5); // overshoot = flinch spike
+    flinchTimer--;
+  } else {
+    // Settle to cower level smoothly
+    repelFactor = lerp(repelFactor, targetRepel, 0.05);
+  }
+
+//Coding tutorial to create bubbles: https://www.youtube.com/watch?v=dFCbiIQglNQ  
 for (let c of circles) {
     fill(14);
     circle(c.x, c.y, c.size);
@@ -96,14 +125,19 @@ for (let c of circles) {
     c.noiseOffset += 0.01;
   }
 
+
   //the oganism 
   push();
   translate(windowWidth / 2, windowHeight / 1.7);
   angleMode(RADIANS);
 
-  let baseRadius = 250;
 
-//adding concentric rings for depth and gradient effect
+
+  // Cower: shrink radius, amplify noise distortion
+  let coweredRadius = baseRadius * map(repelFactor, 0, 1, 1, 1);
+  let noiseAmp = map(repelFactor, 0, 1, 30, 80); // more jagged when cowering
+
+  //adding concentric rings for depth and gradient effect
   for (let layer = 10; layer > 0; layer--) {
   let alpha = map(layer, 10, 0, 0, 70);
 
@@ -117,14 +151,14 @@ for (let c of circles) {
   for (let a = 0; a < TWO_PI; a += 0.1) {
 
     let noiseVal = noise(xoff, yoff);
-    let offset = map(noiseVal, 0, 1, -30, 30);
+    let offset = map(noiseVal, 0, 1, -noiseAmp, noiseAmp);
 
-    let r = (baseRadius + offset) * (layer / 10);
+    let r = (coweredRadius + offset) * (layer / 10);
 
-    let x = r * cos(a);
-    let y = r * sin(a);
+    // let x = r * cos(a);
+    // let y = r * sin(a);
 
-    vertex(x, y);
+    vertex(r * cos(a), r * sin(a));
     xoff += 0.1;
    
   }
@@ -133,7 +167,6 @@ for (let c of circles) {
 }
  yoff += 0.01;
 pop();
-
 
 }
 
