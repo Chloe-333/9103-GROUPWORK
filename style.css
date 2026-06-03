@@ -29,13 +29,13 @@ canvas {
   line-height: 1.1;
 }
 
-/*formatting for description text top right corner*/
+/* formatting for description text top right corner */
 .desc-text {
   position: absolute;
   top: 4%;
   right: 3%;
   width: 18%;
-  font-size: clamp(8px, 40vw, 10px);     /*resizes font within the range during resizing the window*/
+  font-size: clamp(8px, 40vw, 10px);     /* resizes font within the range during resizing the window */
   text-align: left;
 }
 
