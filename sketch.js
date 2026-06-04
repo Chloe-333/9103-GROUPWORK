@@ -1,3 +1,7 @@
+// add in musics
+let songs = [];
+let currentTrack = null;
+
 let yoff = 0.0;
 let circles = [];
 let tears = [];
@@ -6,20 +10,35 @@ let joySprays = [];
 let angerLasers = [];
 let currentEmotion = "neutral";
 
+let repelFactor = 0;
+let flinchTimer = 0;
+let baseRadius = 250;
+
+// preload musics
+function preload() {
+  songs[0] = loadSound('libraries/Key.mp3');
+  songs[1] = loadSound('libraries/Door.mp3');
+  songs[2] = loadSound('libraries/Mice.mp3');
+  songs[3] = loadSound('libraries/Mine.mp3');
+}
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
   colorMode(HSB, 360, 100, 100, 100);
   rectMode(CENTER);
   noStroke();
 
+  //header
   let overlay = createDiv('');
   overlay.class('overlay');
 
+  //title or a name for our concept
   let title = createElement('h1', '');
   title.html('The Dark<br>Antimatter');
   title.class('title-text');
   title.parent(overlay);
 
+  //using storytelling to add context to the concept
   let desc = createElement(
     'p',
     "A relic of the Big Bang, dormant for 13.8 billion years inside a collapsing star 120,000 light years beyond the Milky Way. Detected in 2312 by UESS Collusionary, it defies physics: structured energy patterns, response latency of 0.3 seconds, syntax matching human neural frequency. It isn't reacting. It's answering. Establish contact."
@@ -27,17 +46,16 @@ function setup() {
   desc.class('desc-text');
   desc.parent(overlay);
 
+  // Stats bar — each item as a span so flex spaces them evenly
   let statsBar = createDiv('');
   statsBar.class('stats-bar');
   statsBar.parent(overlay);
 
   let statsItems = [
     'Temp: -420 degree celsius',
-    '',
-    'JOY',
-    'SORROW',
-    'ANGER',
-    '',
+    '44678',
+    'Collusion: not detected',
+    'Force: CENTRIFUGAL',
     'Current distance from the Earth: 14,785,293,290 KM'
   ];
 
@@ -45,6 +63,19 @@ function setup() {
     let span = createElement('span', item);
     span.parent(statsBar);
   });
+
+
+// play music when image loaded
+ playTrack(0);
+}
+
+// switch songs
+function playTrack(index) {
+  if (currentTrack && currentTrack.isPlaying()) {
+    currentTrack.stop();
+  }
+  currentTrack = songs[index];
+  currentTrack.loop();
 }
 
 function draw() {
@@ -61,6 +92,8 @@ function draw() {
     drawIdleAngerLasers();
   }
 
+  mouseHover();
+
   drawAngerLasers();
   drawOrganism();
   drawTears();
@@ -68,6 +101,7 @@ function draw() {
   drawInstructions();
 }
 
+//changing background gradient argument using if, else if and else
 function drawEmotionBackground() {
   if (currentEmotion === "joy") {
     radialGradient(
@@ -109,6 +143,7 @@ function drawEmotionBackground() {
     );
   }
 }
+
 
 function drawCircles() {
   noStroke();
@@ -246,6 +281,7 @@ function drawSharpLaser(cx, cy, angle, startR, endR, h, s, b, alpha, weight) {
   noStroke();
 }
 
+//Oragaism made using blob: https://www.youtube.com/watch?v=rX5p-QRP6R4&t=523s
 function drawOrganism() {
   push();
   translate(windowWidth / 2, windowHeight / 1.7);
@@ -254,6 +290,27 @@ function drawOrganism() {
   noStroke();
 
   let baseRadius = 250;
+  //Cower: shrink radius, amplify noise distortion
+  let coweredRadius = baseRadius * map(repelFactor, 0, 1, 1, 1);
+  let noiseAmp, noiseSpeed, noiseScale;
+
+  if (currentEmotion === "anger") {
+    noiseAmp   = map(repelFactor, 0, 1, 55, 105);  // jagged, volatile
+    noiseSpeed = 0.04;                              // fast rippling
+    noiseScale = 0.25;                              // tight, dense ripples
+  } else if (currentEmotion === "joy") {
+    noiseAmp   = map(repelFactor, 0, 1, 20, 70);  // bouncy but smooth
+    noiseSpeed = 0.5;                             // medium pace
+    noiseScale = 0.08;                              // wide, rolling waves
+  } else if (currentEmotion === "sorrow") {
+    noiseAmp   = map(repelFactor, 0, 1, 10, 30);  // slow, heavy drooping
+    noiseSpeed = 0.005;                             // very slow
+    noiseScale = 0.12;                              // gentle undulation
+  } else {
+    noiseAmp   = map(repelFactor, 0, 1, 30, 80);  // neutral default
+    noiseSpeed = 0.01;
+    noiseScale = 0.1;
+  }
 
   for (let layer = 10; layer > 0; layer--) {
     let alpha = map(layer, 10, 0, 0, 70);
@@ -266,14 +323,11 @@ function drawOrganism() {
 
     for (let a = 0; a < TWO_PI; a += 0.1) {
       let noiseVal = noise(xoff, yoff);
-      let offset = map(noiseVal, 0, 1, -30, 30);
+      let offset = map(noiseVal, 0, 1, -noiseAmp, noiseAmp);
 
-      let r = (baseRadius + offset) * (layer / 10);
+      let r = (coweredRadius + offset) * (layer / 10);
 
-      let x = r * cos(a);
-      let y = r * sin(a);
-
-      vertex(x, y);
+      vertex(r * cos(a), r * sin(a));
       xoff += 0.1;
     }
 
@@ -338,11 +392,24 @@ function keyPressed() {
   joySprays = [];
   angerLasers = [];
 
-  if (key === '0') currentEmotion = "neutral";
-  if (key === '1') currentEmotion = "joy";
-  if (key === '2') currentEmotion = "sorrow";
-  if (key === '3') currentEmotion = "anger";
+  if (key === '0') {
+    currentEmotion = "neutral";
+    playTrack(0);
+  }
+  if (key === '1') {
+    currentEmotion = "joy";
+    playTrack(1);
+  }
+  if (key === '2') {
+    currentEmotion = "sorrow";
+    playTrack(2);
+  }
+  if (key === '3') {
+    currentEmotion = "anger";
+    playTrack(3);
+  }
 }
+
 
 function mousePressed() {
   if (currentEmotion === "sorrow") {
@@ -362,14 +429,14 @@ function mousePressed() {
   }
 }
 
-function spawnCircle(x, y) {
-  circles.push({
-    x: windowWidth / 2,
-    y: windowHeight / 2,
-    size: random(15, 60),
-    noiseOffset: random(1000)
-  });
-}
+// function spawnCircle(x, y) {
+//   circles.push({
+//     x: windowWidth / 2,
+//     y: windowHeight / 2,
+//     size: random(15, 60),
+//     noiseOffset: random(1000)
+//   });
+// }
 
 function spawnTear() {
   tears.push({
@@ -426,7 +493,7 @@ function drawInstructions() {
   fill(0, 0, 15, 70);
   textAlign(CENTER);
   textSize(14);
-  textFont('monospace');
+  textFont('Space mono');
 
   text(
     'Press 0 = PRIMARY | 1 = JOY | 2 = SORROW | 3 = ANGER | Click to interact',
@@ -435,6 +502,31 @@ function drawInstructions() {
   );
 }
 
+//https://p5js.org/reference/p5.Element/mouseOver/
+function mouseHover() {
+  // Mouse positioning
+  let dx = mouseX - windowWidth / 2;
+  let dy = mouseY - windowHeight / 1.7;
+  let dist = sqrt(dx * dx + dy * dy);
+
+  let hoverThreshold = 300; // how close mouse needs to be
+  let targetRepel = dist < hoverThreshold ? map(dist, 0, hoverThreshold, 1, 0) : 0;
+
+  //Flinch: when mouse pointer touches the organism
+  if (targetRepel > 0.1 && repelFactor < 0.1) {
+    flinchTimer = 15; // frames of sharp flinch
+  }
+  if (flinchTimer > 0) {
+    repelFactor = min(repelFactor + 0.3, 1.5); 
+    flinchTimer--;
+  } else {
+    // moves away after flinching
+    repelFactor = lerp(repelFactor, targetRepel, 0.05);
+  }
+}
+
+// https://www.youtube.com/watch?v=-MUOweQ6wac&t=1s
+// gradients used in the background
 function radialGradient(sX, sY, sR, eX, eY, eR, colorS, colorE, colorM) {
   let gradient = drawingContext.createRadialGradient(
     sX, sY, sR,
