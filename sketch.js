@@ -27,7 +27,7 @@ function setup() {
   colorMode(HSB, 360, 100, 100, 100);
   rectMode(CENTER);
   noStroke();
-
+  initTimeMechanic();
   //header
   let overlay = createDiv('');
   overlay.class('overlay');
@@ -80,6 +80,7 @@ function playTrack(index) {
 
 function draw() {
   background(100);
+  updateTimeMechanic();
 
   drawEmotionBackground();
   noStroke();
@@ -281,7 +282,7 @@ function drawSharpLaser(cx, cy, angle, startR, endR, h, s, b, alpha, weight) {
   noStroke();
 }
 
-//Oragaism made using blob: https://www.youtube.com/watch?v=rX5p-QRP6R4&t=523s
+// Organism made using blob: https://www.youtube.com/watch?v=rX5p-QRP6R4&t=523s
 function drawOrganism() {
   push();
   translate(windowWidth / 2, windowHeight / 1.7);
@@ -289,31 +290,43 @@ function drawOrganism() {
 
   noStroke();
 
-  let baseRadius = 250;
-  //Cower: shrink radius, amplify noise distortion
-  let coweredRadius = baseRadius * map(repelFactor, 0, 1, 1, 1);
-  let noiseAmp, noiseSpeed, noiseScale;
+  // Apply lifecycle, breathing, and heartbeat scales to base radius
+  let timedBaseRadius = getTimedRadius(250);
+  
+  // Cower: shrink radius, amplify noise distortion
+  let coweredRadius = timedBaseRadius * map(repelFactor, 0, 1, 1, 1);
+  let targetNoiseAmp, noiseSpeed, noiseScale;
 
   if (currentEmotion === "anger") {
-    noiseAmp   = map(repelFactor, 0, 1, 55, 105);  // jagged, volatile
-    noiseSpeed = 0.04;                              // fast rippling
-    noiseScale = 0.25;                              // tight, dense ripples
+    targetNoiseAmp = map(repelFactor, 0, 1, 55, 105);  // jagged, volatile
+    noiseSpeed     = 0.04;                             // fast rippling
+    noiseScale     = 0.25;                             // tight, dense ripples
   } else if (currentEmotion === "joy") {
-    noiseAmp   = map(repelFactor, 0, 1, 20, 70);  // bouncy but smooth
-    noiseSpeed = 0.5;                             // medium pace
-    noiseScale = 0.08;                              // wide, rolling waves
+    targetNoiseAmp = map(repelFactor, 0, 1, 20, 70);   // bouncy but smooth
+    noiseSpeed     = 0.035;                            // medium pace (Optimized from 0.5 to match time mechanic)
+    noiseScale     = 0.08;                             // wide, rolling waves
   } else if (currentEmotion === "sorrow") {
-    noiseAmp   = map(repelFactor, 0, 1, 10, 30);  // slow, heavy drooping
-    noiseSpeed = 0.005;                             // very slow
-    noiseScale = 0.12;                              // gentle undulation
+    targetNoiseAmp = map(repelFactor, 0, 1, 10, 30);   // slow, heavy drooping
+    noiseSpeed     = 0.005;                            // very slow
+    noiseScale     = 0.12;                             // gentle undulation
   } else {
-    noiseAmp   = map(repelFactor, 0, 1, 30, 80);  // neutral default
-    noiseSpeed = 0.01;
-    noiseScale = 0.1;
+    targetNoiseAmp = map(repelFactor, 0, 1, 30, 80);   // neutral default
+    noiseSpeed     = 0.01;
+    noiseScale     = 0.1;
   }
 
+  // Calculate baseline neutral noise for decay fallback
+  let neutralNoiseAmp = map(repelFactor, 0, 1, 30, 80);
+
+  // Blend current emotion noise back to neutral noise based on decay progress
+  let finalNoiseAmp = getDecayedNoiseAmp(targetNoiseAmp, neutralNoiseAmp);
+
+  // Get current alpha limit from lifecycle state
+  let maxLifecycleAlpha = getLifecycleAlpha();
+
   for (let layer = 10; layer > 0; layer--) {
-    let alpha = map(layer, 10, 0, 0, 70);
+    // Dynamic alpha mapping driven by lifecycle state
+    let alpha = map(layer, 10, 0, 0, maxLifecycleAlpha);
 
     fill(0, 0, 12, alpha);
 
@@ -323,18 +336,19 @@ function drawOrganism() {
 
     for (let a = 0; a < TWO_PI; a += 0.1) {
       let noiseVal = noise(xoff, yoff);
-      let offset = map(noiseVal, 0, 1, -noiseAmp, noiseAmp);
+      // Use decayed finalNoiseAmp for shape offsetting
+      let offset = map(noiseVal, 0, 1, -finalNoiseAmp, finalNoiseAmp);
 
       let r = (coweredRadius + offset) * (layer / 10);
 
       vertex(r * cos(a), r * sin(a));
-      xoff += 0.1;
+      xoff += noiseScale; // Restored original project variable step
     }
 
     endShape(CLOSE);
   }
 
-  yoff += 0.01;
+  yoff += noiseSpeed; // Driven by emotion-specific speed
   pop();
 }
 
@@ -408,6 +422,7 @@ function keyPressed() {
     currentEmotion = "anger";
     playTrack(3);
   }
+  onEmotionChanged(currentEmotion);
 }
 
 

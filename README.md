@@ -1,5 +1,13 @@
 # 9103-GROUPWORK
 # Final Project Pitch
+README.md: Your repository must include a well-formatted README.md file containing:
+
+Inspiration: What inspired your team's project? This might include artworks, websites, games, concepts, or specific aspects of the source material. Explain briefly how these inspirations shaped your approach.)
+Techniques: What p5.js techniques were implemented in the project and why? Give a short overview of how your code works and the key decisions your team made.
+Mechanic ownership: Which team member was responsible for which mechanic, and a brief description of what each mechanic does.)
+AI acknowledgement: If you used ChatGPT, Claude, DeepSeek, or any other AI tool to help generate code, you must reference it here and explain what it was used for and how the generated code works. This must also be commented in the actual code (e.g. // this code was generated with the help of ChatGPT and does xyz).
+External references: If you borrowed or were influenced by code found online, in a book, or from any other source, reference it with a link and an explanation. This must also be commented in the code (e.g. // this technique is from www.source-url.com).
+Interaction instructions: How does someone experience your work? E.g., "move the mouse slowly over the screen," "click play and wait for audio to start," "use arrow keys to move."
 ## Inspirations
 - **Links**
     - *Link 1* 
@@ -25,8 +33,9 @@ In immersive side of things, the concept takes inspiration from Tamagotchi. The 
 
 
 ---
+## Part 2: **Techniques**
 
-## Part 2: **Mechanics**
+## Part 3: **Mechanics**
 
 
 ### Mechanic 1 — *Audio*
@@ -39,9 +48,9 @@ The audio mechanic drives the emotional atmosphere of the piece through two laye
 ![An image of audio example 2](READMEImages/audioexample2.jpg)
 
 ### Mechanic 2 — *Time-based*
-The time-based mechanic controls the emotional pacing and evolution of the interactive environment. Over time, the abstract form gradually changes its movement, colour intensity, particle behaviour, and animation speed, allowing each emotional state to feel alive and constantly evolving. 
+My time-based mechanic controls how the visual system changes over time. It includes a lifecycle system, breathing motion, heartbeat pulses, and emotional decay. 
 
-Timed events will trigger subtle environmental transitions and visual reactions even when the user is not interacting directly. For example, the system may slowly become calmer, more energetic, or more chaotic depending on the active emotional mode. 
+The lifecycle gradually changes the scale and transparency of the main visual form, creating a sense of birth, maturity, and ageing. The breathing and heartbeat systems use time-based oscillation and timed intervals to make the form feel alive. The emotion decay system allows emotional states such as anger, joy, and sorrow to fade back to neutral after different durations, so the interaction feels temporary and evolving rather than static.
 
 ### Mechanic 3 — *Perlin Noise + Randomness*
 The Perlin noise mechanic will explore reactions to user movements and input. This is particularly intended to make the reactions natural. The mechanism will create different frequency of ripple effect based on the user's input or movement. Additionally, the noise would have a standby mode where the lines move in a rhythmic pulsing manner to denote breathing or appearance of being alive. 
@@ -59,6 +68,32 @@ This mechanism supports the project's concept of emotional expression and intera
 ![An image of userinput example](READMEImages/userinput.jpg)
 
 ---
+## Part 4: **AI acknowledgement**
 
-## Part 3: **Putting It Together**
+## Part 5: **External references**
+### p5.js Reference
+[p5js reference link](https://p5js.org/reference/)
+
+The p5.js Reference was used to understand and implement built-in functions including:
+
+- millis()
+- sin()
+- map()
+- lerp()
+- constrain()
+
+These functions were used to create timed animation, lifecycle transitions, breathing motion, heartbeat pulses, and emotional decay behaviour throughout the project.
+
+## Part 6: **Interaction instructions**
+Wait for the ambient soundtrack to begin.
+Press:
+1 = Joy
+2 = Sorrow
+3 = Anger
+4 = Fear
+Hover the mouse over the organism to trigger ripple effects and interactive sound feedback.
+Observe how the organism responds through changes in movement, colour, breathing rhythm, heartbeat, and emotional state.
+Stay within the experience to witness automatic time-based events, lifecycle changes, and emotional decay back to a neutral state.
+
+## Part 7: **Putting It Together**
 All four mechanics work together in one interactive environment. Mouse movement and clicking allow users to interact with the abstract form directly. Audio creates sound feedback and changes visual reactions. Perlin noise and randomness make the movement feel organic and unpredictable. The time-based mechanic triggers automatic events, visual effects, and sound changes over time, helping the experience feel alive and always changing. Together, the mechanics create a connected emotional audiovisual experience through motion, interaction, sound, and atmosphere. 
