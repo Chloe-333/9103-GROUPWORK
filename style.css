@@ -40,7 +40,7 @@ canvas {
   position: absolute;
   top: 4%;
   right: 3%;
-  width: clamp(150px, 50vw, 250px);
+  width: clamp(150px, 50vw, 300px);
   font-size: clamp(8px, 40vw, 10px);     /* resizes font within the range during resizing the window */
   text-align: left;
 }

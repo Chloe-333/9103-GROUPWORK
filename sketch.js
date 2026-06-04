@@ -41,11 +41,9 @@ function setup() {
 
   let statsItems = [
     'Temp: -420 degree celsius',
-    '',
-    'JOY',
-    'SORROW',
-    'ANGER',
-    '',
+    '44678',
+    'Collusion: not detected',
+    'Force: CENTRIFUGAL',
     'Current distance from the Earth: 14,785,293,290 KM'
   ];
 
@@ -79,6 +77,7 @@ function draw() {
   
 }
 
+//changing background gradient argument using if, else if and else
 function drawEmotionBackground() {
   if (currentEmotion === "joy") {
     radialGradient(
@@ -120,6 +119,7 @@ function drawEmotionBackground() {
     );
   }
 }
+
 
 function drawCircles() {
   noStroke();
@@ -257,6 +257,7 @@ function drawSharpLaser(cx, cy, angle, startR, endR, h, s, b, alpha, weight) {
   noStroke();
 }
 
+//Oragaism made using blob: https://www.youtube.com/watch?v=rX5p-QRP6R4&t=523s
 function drawOrganism() {
   push();
   translate(windowWidth / 2, windowHeight / 1.7);
@@ -265,9 +266,27 @@ function drawOrganism() {
   noStroke();
 
   let baseRadius = 250;
-  // Cower: shrink radius, amplify noise distortion
+  //Cower: shrink radius, amplify noise distortion
   let coweredRadius = baseRadius * map(repelFactor, 0, 1, 1, 1);
-  let noiseAmp = map(repelFactor, 0, 1, 30, 80); // more jagged when cowering
+  let noiseAmp, noiseSpeed, noiseScale;
+
+  if (currentEmotion === "anger") {
+    noiseAmp   = map(repelFactor, 0, 1, 55, 105);  // jagged, volatile
+    noiseSpeed = 0.04;                              // fast rippling
+    noiseScale = 0.25;                              // tight, dense ripples
+  } else if (currentEmotion === "joy") {
+    noiseAmp   = map(repelFactor, 0, 1, 20, 70);  // bouncy but smooth
+    noiseSpeed = 0.5;                             // medium pace
+    noiseScale = 0.08;                              // wide, rolling waves
+  } else if (currentEmotion === "sorrow") {
+    noiseAmp   = map(repelFactor, 0, 1, 10, 30);  // slow, heavy drooping
+    noiseSpeed = 0.005;                             // very slow
+    noiseScale = 0.12;                              // gentle undulation
+  } else {
+    noiseAmp   = map(repelFactor, 0, 1, 30, 80);  // neutral default
+    noiseSpeed = 0.01;
+    noiseScale = 0.1;
+  }
 
   for (let layer = 10; layer > 0; layer--) {
     let alpha = map(layer, 10, 0, 0, 70);
@@ -437,7 +456,7 @@ function drawInstructions() {
   fill(0, 0, 15, 70);
   textAlign(CENTER);
   textSize(14);
-  textFont('monospace');
+  textFont('Space mono');
 
   text(
     'Press 0 = PRIMARY | 1 = JOY | 2 = SORROW | 3 = ANGER | Click to interact',
@@ -446,8 +465,9 @@ function drawInstructions() {
   );
 }
 
+//https://p5js.org/reference/p5.Element/mouseOver/
 function mouseHover() {
-    // --- Mouse proximity logic ---
+  // Mouse positioning
   let dx = mouseX - windowWidth / 2;
   let dy = mouseY - windowHeight / 1.7;
   let dist = sqrt(dx * dx + dy * dy);
@@ -455,19 +475,21 @@ function mouseHover() {
   let hoverThreshold = 300; // how close mouse needs to be
   let targetRepel = dist < hoverThreshold ? map(dist, 0, hoverThreshold, 1, 0) : 0;
 
-  // Flinch: spike repelFactor sharply when mouse first enters threshold
+  //Flinch: when mouse pointer touches the organism
   if (targetRepel > 0.1 && repelFactor < 0.1) {
     flinchTimer = 15; // frames of sharp flinch
   }
   if (flinchTimer > 0) {
-    repelFactor = min(repelFactor + 0.3, 1.5); // overshoot = flinch spike
+    repelFactor = min(repelFactor + 0.3, 1.5); 
     flinchTimer--;
   } else {
-    // Settle to cower level smoothly
+    // moves away after flinching
     repelFactor = lerp(repelFactor, targetRepel, 0.05);
   }
 }
 
+// https://www.youtube.com/watch?v=-MUOweQ6wac&t=1s
+// gradients used in the background
 function radialGradient(sX, sY, sR, eX, eY, eR, colorS, colorE, colorM) {
   let gradient = drawingContext.createRadialGradient(
     sX, sY, sR,
