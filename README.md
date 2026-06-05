@@ -14,17 +14,24 @@
 
 ## Part 1: **Project Direction**
 ### Project Path
-For our Creative Coding final project, we aim to create an immersive and interactive experience that is built on abstract ideas like experiencing emotions. We have collectively decided to create a concept from scratch and not repurpose any existing artwork. We will, however, take inspiration for art styles, colour palette, and visual language to maintain consistency. 
+For our Creative Coding final project, we aim to create an immersive and interactive experience that is built on abstract ideas like experiencing emotions.  
 
 Our concept takes inspiration from various characters that portray other worldly characteristics like Rocky from Project Hail Mary, Stitch from Lilo and Stitch and Emi from Ultraman: Rising. The idea is to portray emotions without the use of the word, and communication can be extended to visual, sound, and reaction.  
 
+![An image of project script](READMEImages/Inspiration.png)
+
 In immersive side of things, the concept takes inspiration from Tamagotchi. The users have to interact with an abstract idea of life, similar to that of an amoeba or an alien. The organisms would react based on user input and movement. 
 
+To start off with the project we settled on a cohesive visual language to maintain consistency. This design system includes gradients pertaining to each emotion case, typography that maintains visual hierarchy and a set of use case examples. 
+
+![An image of project script](READMEImages/designsystem.png)
+
+Further we began ideating and working out the interactions in meaningful ways.
+
+![An image of project script](READMEImages/ideation.png)
+
 ### Vision
-- **Pictures**
     - *Picture 1*
-![An image of project script](READMEImages/script.png)
-    - *Picture 2*
 ![An image of moodboard](READMEImages/moodboard.jpg)
 
 
@@ -61,7 +68,7 @@ The lifecycle gradually changes the scale and transparency of the main visual fo
 ### Mechanic 3 — skar0152-*Perlin Noise + Randomness*
 The Perlin noise mechanic will explore reactions to user movements and input. This is particularly intended to make the reactions natural. The mechanism will create different frequency of ripple effect based on the user's input or movement. Additionally, the noise would have a standby mode where the lines move in a rhythmic pulsing manner to denote breathing or appearance of being alive. 
 
-The noise is also applied directly to visual properties such as line weight, allowing the ripple effect to be expressed in an exaggerated, gestural way that emphasizes movement and energy. 
+The noise is also applied directly to visual properties allowing the ripple effect to be expressed in an exaggerated, gestural way that emphasizes movement and energy. 
 
 ### Mechanic 4 — yyao0435-*User Input*
 The user input mechanism enables users to interact directly with the digital organism through keyboard and mouse control. Different keyboard numbers will represent different emotions, such as happiness, sadness, and anger. When the user presses one of the keys, the organism will change its color and behavior. 
@@ -75,12 +82,17 @@ This mechanism supports the project's concept of emotional expression and intera
 
 ---
 ## Part 4: **AI acknowledgement**
+We have used Claude for our project, we have used it to understand, write and debug the code in the following lines:
+1) The Organism: While the orginal code is derived from https://www.youtube.com/watch?v=rX5p-QRP6R4&t=523s, it was modified in multiple ways to incorporate into our concept. The blob is built on polar coordinates, defined by a radius and an angle which is then converted to x/y through " x = r.cos(a)" and " y = r.sin(a)". The noise offset is intended to create inward and outward motion. As the angle advances around the circle, xoff steps through noise space: a bigger step (anger - 0.25) hits more distant, jagged values producing spiky edges; a smaller step (joy - 0.08) samples nearby values for gentle waves. yoff advances every frame, sliding through the noise field to animate the shape over time. The 10 layers all use the same noise but scale radius by layer/10 and fade from transparent to opaque outward-in, creating the glowing depth effect.
+
+2) mouseHover: The initial understanding of this function was retrived at https://p5js.org/reference/p5.Element/mouseOver/. To make the organism react to the mouse by first calculating the straight line from the cursor to the organism with Pythagorean theorem. If the distance is within 300px, the 'targetRepel' is mapped inversley. When the mouse is close enough to repel when the organism is in a relaxed state (i. e repelFactor is less than 0.1), the flinching motion is sharperned and spikes to +0.3 per frame. Once flinching motion is complete, repelFactor is eased with 'lerp()' with 5% blend factor.
+
 
 ## Part 5: **External references**
 ### p5.js Reference
 [p5js reference link](https://p5js.org/reference/)
 
-The p5.js Reference was used to understand and implement built-in functions including:
+1. The p5.js Reference was used to understand and implement built-in functions including:
 
 - millis()
 - sin()
@@ -89,6 +101,10 @@ The p5.js Reference was used to understand and implement built-in functions incl
 - constrain()
 
 These functions were used to create timed animation, lifecycle transitions, breathing motion, heartbeat pulses, and emotional decay behaviour throughout the project.
+
+2. Gradient Background: https://www.youtube.com/watch?v=-MUOweQ6wac&t=1s
+3. Blob: https://www.youtube.com/watch?v=rX5p-QRP6R4&t=523s
+4. mouseHover: https://p5js.org/reference/p5.Element/mouseOver/
 
 ## Part 6: **Interaction instructions**
 Wait for the ambient soundtrack to begin.
