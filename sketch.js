@@ -56,6 +56,7 @@ function setup() {
 
 // play music when image loaded
  playTrack(0);
+ initAudio();
 }
 
 function draw() {
@@ -277,20 +278,24 @@ function drawOrganism() {
   let coweredRadius = timedBaseRadius * map(repelFactor, 0, 1, 1, 1);
   let targetNoiseAmp, noiseSpeed, noiseScale;
 
+   // Get bass energy from current background music to drive organism
+  let bassEnergy = getBassEnergy();
+  let audioAmp = map(bassEnergy, 0, 255, 0, 60);
+
   if (currentEmotion === "anger") {
-    targetNoiseAmp = map(repelFactor, 0, 1, 55, 105);  // jagged, volatile
-    noiseSpeed     = 0.04;                             // fast rippling
-    noiseScale     = 0.25;                             // tight, dense ripples
+    targetNoiseAmp = map(repelFactor, 0, 1, 55, 105) + audioAmp;
+    noiseSpeed     = 0.04;
+    noiseScale     = 0.25;
   } else if (currentEmotion === "joy") {
-    targetNoiseAmp = map(repelFactor, 0, 1, 20, 70);   // bouncy but smooth
-    noiseSpeed     = 0.035;                            // medium pace (Optimized from 0.5 to match time mechanic)
-    noiseScale     = 0.08;                             // wide, rolling waves
+    targetNoiseAmp = map(repelFactor, 0, 1, 20, 70) + audioAmp;
+    noiseSpeed     = 0.035;
+    noiseScale     = 0.08;
   } else if (currentEmotion === "sorrow") {
-    targetNoiseAmp = map(repelFactor, 0, 1, 10, 30);   // slow, heavy drooping
-    noiseSpeed     = 0.005;                            // very slow
-    noiseScale     = 0.12;                             // gentle undulation
+    targetNoiseAmp = map(repelFactor, 0, 1, 10, 30) + audioAmp;
+    noiseSpeed     = 0.005;
+    noiseScale     = 0.12;
   } else {
-    targetNoiseAmp = map(repelFactor, 0, 1, 30, 80);   // neutral default
+    targetNoiseAmp = map(repelFactor, 0, 1, 30, 80) + audioAmp;
     noiseSpeed     = 0.01;
     noiseScale     = 0.1;
   }

@@ -1,4 +1,7 @@
 // Audio variables
+let fft;
+let smoothing = 0.8;
+let numBins = 128;
 let songs = [];
 let currentTrack = null;
 let hoverSounds = [];
@@ -59,6 +62,11 @@ function playTrack(index) {
   }
   currentTrack = songs[index];
   currentTrack.loop();
+
+  //Connect fft to current track
+  if(fft){
+    currentTrack.connect(fft);
+  }
 }
 
 // 3. Hover sounds: Play a random hover sound on flinch
@@ -100,4 +108,17 @@ function stopAllShaking() {
       shakingSounds[i].stop();
     }
   }
+}
+
+// 8. FFT: Initalise FFT annalyser in setup()
+function initAudio() {
+  fft = new p5.FFT(smoothing, numBins);
+  currentTrack.connect(fft);
+}
+
+// 9. FFT: Return the bass frequency energy level to match visual effects
+function getBassEnergy() {
+  if (!fft) return 0;
+  fft.analyze();
+  return fft.getEnergy("bass");
 }
