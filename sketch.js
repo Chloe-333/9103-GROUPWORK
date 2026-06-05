@@ -459,7 +459,7 @@ function keyPressed() {
 
 function mousePressed() {
   resetInteractionTimer();
-  
+
   if (currentEmotion === "sorrow") {
     spawnTear();
   }
@@ -582,6 +582,8 @@ function mouseHover() {
   if (targetRepel > 0.1 && repelFactor < 0.1) {
     flinchTimer = 15; // frames of sharp flinch
 
+    resetInteractionTimer();
+    
     // a random hover sound
     let randomIndex = floor(random(4));
     if (!hoverSounds[randomIndex].isPlaying()) {
