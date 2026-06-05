@@ -1,13 +1,9 @@
 # 9103-GROUPWORK
 # Final Project Pitch
-README.md: Your repository must include a well-formatted README.md file containing:
 
-Inspiration: What inspired your team's project? This might include artworks, websites, games, concepts, or specific aspects of the source material. Explain briefly how these inspirations shaped your approach.)
-Techniques: What p5.js techniques were implemented in the project and why? Give a short overview of how your code works and the key decisions your team made.
-Mechanic ownership: Which team member was responsible for which mechanic, and a brief description of what each mechanic does.)
-AI acknowledgement: If you used ChatGPT, Claude, DeepSeek, or any other AI tool to help generate code, you must reference it here and explain what it was used for and how the generated code works. This must also be commented in the actual code (e.g. // this code was generated with the help of ChatGPT and does xyz).
-External references: If you borrowed or were influenced by code found online, in a book, or from any other source, reference it with a link and an explanation. This must also be commented in the code (e.g. // this technique is from www.source-url.com).
-Interaction instructions: How does someone experience your work? E.g., "move the mouse slowly over the screen," "click play and wait for audio to start," "use arrow keys to move."
+4. AI acknowledgement: If you used ChatGPT, Claude, DeepSeek, or any other AI tool to help generate code, you must reference it here and explain what it was used for and how the generated code works. This must also be commented in the actual code (e.g. // this code was generated with the help of ChatGPT and does xyz).
+5. External references: If you borrowed or were influenced by code found online, in a book, or from any other source, reference it with a link and an explanation. This must also be commented in the code (e.g. // this technique is from www.source-url.com).
+
 ## Inspirations
 - **Links**
     - *Link 1* 
@@ -34,11 +30,21 @@ In immersive side of things, the concept takes inspiration from Tamagotchi. The 
 
 ---
 ## Part 2: **Techniques**
+1. Smooth Shape Noise: 
+To avoid the chaotic and glitchy look of standard random numbers, the core organism uses p5.js noise(xoff, yoff) calculated within a loop of circular coordinates (cos(a), sin(a)). This technique allows the perimeter of the shape to deform in an organic, mathematically continuous, and wave-like way.
 
+2. Main State Controller:
+ We used a main state tracker variable (currentEmotion) to act as the master controller. A key decision our team made was directly linking the shape's specific movement properties—such as updating speed (noiseSpeed) and how bumpy the shape gets (targetNoiseAmp)—to this switcher, so the entire animation logic adapts dynamically on the fly.
+
+3. Separated Animation Code:
+ To keep the program running smoothly at a high frame rate, we separated the continuous background body calculations from the short-duration particle systems (such as circles, tears, joySprays, and angerLasers). While the particle arrays compute their own independent motion frame-by-frame, the baseline breathing and heartbeat cycles are computed concurrently in the background by pulling time scales from the time-mechanic.js API (getTimedRadius()).
+
+4. Custom Radial Gradients:
+ We bypassed standard solid fills by interfacing directly with the browser's native canvas features right inside p5.js using drawingContext.createRadialGradient. This decision enabled us to programmatically blend customized multi-colored radial background rings that transition seamlessly based on system environment variables.
+---
 ## Part 3: **Mechanics**
 
-
-### Mechanic 1 — *Audio*
+### Mechanic 1 — qlyu0817-*Audio*
 The audio mechanic drives the emotional atmosphere of the piece through two layers of sound. After entering the page, a gentle ambient track plays automatically, establishing a neutral mood. When the user selects an emotion from happiness, sadness, anger and fear, the background music transitions immediately to a corresponding track that reflects the emotional state. Additionally, when the user hovers over the digital pet, a unique sound effect is triggered, with each emotion producing a distinctly different response. 
 
 - **Pictures**
@@ -47,17 +53,17 @@ The audio mechanic drives the emotional atmosphere of the piece through two laye
     - *Picture 2*
 ![An image of audio example 2](READMEImages/audioexample2.jpg)
 
-### Mechanic 2 — *Time-based*
+### Mechanic 2 — jwan0684-*Time-based*
 My time-based mechanic controls how the visual system changes over time. It includes a lifecycle system, breathing motion, heartbeat pulses, and emotional decay. 
 
 The lifecycle gradually changes the scale and transparency of the main visual form, creating a sense of birth, maturity, and ageing. The breathing and heartbeat systems use time-based oscillation and timed intervals to make the form feel alive. The emotion decay system allows emotional states such as anger, joy, and sorrow to fade back to neutral after different durations, so the interaction feels temporary and evolving rather than static.
 
-### Mechanic 3 — *Perlin Noise + Randomness*
+### Mechanic 3 — skar0152-*Perlin Noise + Randomness*
 The Perlin noise mechanic will explore reactions to user movements and input. This is particularly intended to make the reactions natural. The mechanism will create different frequency of ripple effect based on the user's input or movement. Additionally, the noise would have a standby mode where the lines move in a rhythmic pulsing manner to denote breathing or appearance of being alive. 
 
 The noise is also applied directly to visual properties such as line weight, allowing the ripple effect to be expressed in an exaggerated, gestural way that emphasizes movement and energy. 
 
-### Mechanic 4 — *User Input*
+### Mechanic 4 — yyao0435-*User Input*
 The user input mechanism enables users to interact directly with the digital organism through keyboard and mouse control. Different keyboard numbers will represent different emotions, such as happiness, sadness, and anger. When the user presses one of the keys, the organism will change its color and behavior. 
 
 Mouse interaction can also create connections between users and organisms. When the user hovers the mouse over the organism, a ripple-like visual effect will appear around its body. 
