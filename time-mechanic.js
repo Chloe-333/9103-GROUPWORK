@@ -71,10 +71,10 @@ function updateBreathing() {
   let breathSpeed, breathDepth;
 
   if (currentEmotion === 'anger') {
-    breathSpeed = 0.045;
+    breathSpeed = 0.022;
     breathDepth = 0.06;
   } else if (currentEmotion === 'joy') {
-    breathSpeed = 0.035;
+    breathSpeed = 0.018;
     breathDepth = 0.08;
   } else if (currentEmotion === 'sorrow') {
     breathSpeed = 0.008;
