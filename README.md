@@ -83,14 +83,16 @@ This mechanism supports the project's concept of emotional expression and intera
 ---
 ## Part 4: **AI acknowledgement**
 We have used Claude for our project, we have used it to understand, write and debug the code in the following lines:
-1) The o
+1) The Organism: While the orginal code is derived from https://www.youtube.com/watch?v=rX5p-QRP6R4&t=523s, it was modified in multiple ways to incorporate into our concept. The blob is built on polar coordinates, defined by a radius and an angle which is then converted to x/y through " x = r.cos(a)" and " y = r.sin(a)". The noise offset is intended to create inward and outward motion. As the angle advances around the circle, xoff steps through noise space: a bigger step (anger - 0.25) hits more distant, jagged values producing spiky edges; a smaller step (joy - 0.08) samples nearby values for gentle waves. yoff advances every frame, sliding through the noise field to animate the shape over time. The 10 layers all use the same noise but scale radius by layer/10 and fade from transparent to opaque outward-in, creating the glowing depth effect.
+
+2) mouseHover: The initial understanding of this function was retrived at https://p5js.org/reference/p5.Element/mouseOver/. To make the organism react to the mouse by first calculating the straight line from the cursor to the organism with Pythagorean theorem. If the distance is within 300px, the 'targetRepel' is mapped inversley. When the mouse is close enough to repel when the organism is in a relaxed state (i. e repelFactor is less than 0.1), the flinching motion is sharperned and spikes to +0.3 per frame. Once flinching motion is complete, repelFactor is eased with 'lerp()' with 5% blend factor.
 
 
 ## Part 5: **External references**
 ### p5.js Reference
 [p5js reference link](https://p5js.org/reference/)
 
-The p5.js Reference was used to understand and implement built-in functions including:
+1. The p5.js Reference was used to understand and implement built-in functions including:
 
 - millis()
 - sin()
@@ -99,6 +101,10 @@ The p5.js Reference was used to understand and implement built-in functions incl
 - constrain()
 
 These functions were used to create timed animation, lifecycle transitions, breathing motion, heartbeat pulses, and emotional decay behaviour throughout the project.
+
+2. Gradient Background: https://www.youtube.com/watch?v=-MUOweQ6wac&t=1s
+3. Blob: https://www.youtube.com/watch?v=rX5p-QRP6R4&t=523s
+4. mouseHover: https://p5js.org/reference/p5.Element/mouseOver/
 
 ## Part 6: **Interaction instructions**
 Wait for the ambient soundtrack to begin.
