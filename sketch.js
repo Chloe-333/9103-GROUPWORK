@@ -1,13 +1,3 @@
-// add in musics
-let lastEmotion = "neutral";
-let songs = [];
-let hoverSounds = [];
-let joySounds = [];
-let sorrowSounds = [];
-let angerSounds = [];
-let shakingSounds = [];
-
-let currentTrack = null;
 
 let yoff = 0.0;
 let circles = [];
@@ -20,46 +10,6 @@ let currentEmotion = "neutral";
 let repelFactor = 0;
 let flinchTimer = 0;
 let baseRadius = 250;
-
-// preload musics
-function preload() {
-  songs[0] = loadSound('libraries/Key.mp3');
-  songs[1] = loadSound('libraries/Door.mp3');
-  songs[2] = loadSound('libraries/Mice.mp3');
-  songs[3] = loadSound('libraries/Mine.mp3');
-
-  // hover sound effects
-  hoverSounds[0] = loadSound('libraries/hover1.mp3');
-  hoverSounds[1] = loadSound('libraries/hover2.mp3');
-  hoverSounds[2] = loadSound('libraries/hover3.mp3');
-  hoverSounds[3] = loadSound('libraries/hover4.mp3');
-
-  // joy sound effects
-  joySounds[0] = loadSound('libraries/joy1.mp3');
-  joySounds[1] = loadSound('libraries/joy2.mp3');
-  joySounds[2] = loadSound('libraries/joy3.mp3');
-  joySounds[3] = loadSound('libraries/joy4.mp3');
-
-  // sorrow sound effects
-  sorrowSounds[0] = loadSound('libraries/drip1.mp3');
-  sorrowSounds[1] = loadSound('libraries/drip2.mp3');
-  sorrowSounds[2] = loadSound('libraries/drip3.mp3');
-  sorrowSounds[3] = loadSound('libraries/drip4.mp3');
-
-  // anger sound effects
-  angerSounds[0] = loadSound('libraries/anger1.mp3');
-  angerSounds[1] = loadSound('libraries/anger2.mp3');
-  angerSounds[2] = loadSound('libraries/anger3.mp3');
-  angerSounds[3] = loadSound('libraries/anger4.mp3');
-  angerSounds[4] = loadSound('libraries/anger5.mp3');
-  angerSounds[5] = loadSound('libraries/anger6.mp3');
-
-  // shaking sound effects
-  shakingSounds[0] = loadSound('libraries/shaking1.mp3');
-  shakingSounds[1] = loadSound('libraries/shaking2.mp3');
-  shakingSounds[2] = loadSound('libraries/shaking3.mp3');
-  shakingSounds[3] = loadSound('libraries/shaking4.mp3');
-}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -106,15 +56,6 @@ function setup() {
 
 // play music when image loaded
  playTrack(0);
-}
-
-// switch songs
-function playTrack(index) {
-  if (currentTrack && currentTrack.isPlaying()) {
-    currentTrack.stop();
-  }
-  currentTrack = songs[index];
-  currentTrack.loop();
 }
 
 function draw() {
@@ -503,10 +444,7 @@ function mousePressed() {
 
 function spawnTear() {
   // a random sorrow sound
-  let randomIndex = floor(random(4));
-  if (!sorrowSounds[randomIndex].isPlaying()) {
-    sorrowSounds[randomIndex].play();
-  }
+  playSorrowSound();
 
   tears.push({
     x: windowWidth / 2 + random(-35, 35),
@@ -519,10 +457,7 @@ function spawnTear() {
 
 function spawnJoySpray() {
   // a random joy sound
-  let randomIndex = floor(random(4));
-  if (!joySounds[randomIndex].isPlaying()) {
-    joySounds[randomIndex].play();
-  }
+  playJoySound();
 
   let cx = windowWidth / 2;
   let cy = windowHeight / 1.7;
@@ -551,10 +486,7 @@ function spawnJoySpray() {
 
 function spawnAngerLasers() {
   // a random anger sound
-  let randomIndex = floor(random(6));
-  if (!angerSounds[randomIndex].isPlaying()) {
-    angerSounds[randomIndex].play();
-  }
+  playAngerSound();
 
   let laserWeights = [1, 1.5, 2, 3, 5, 8];
 
@@ -600,10 +532,7 @@ function mouseHover() {
     resetInteractionTimer();
     
     // a random hover sound
-    let randomIndex = floor(random(4));
-    if (!hoverSounds[randomIndex].isPlaying()) {
-      hoverSounds[randomIndex].play();
-    }
+    playHoverSound();
   }
   
   // create a loopp layback while the mouse is hovering on the organism

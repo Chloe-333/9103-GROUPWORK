@@ -1,11 +1,12 @@
 // Audio variables
 let songs = [];
 let currentTrack = null;
-
 let hoverSounds = [];
 let joySounds = [];
 let sorrowSounds = [];
 let angerSounds = [];
+let shakingSounds = [];
+let lastEmotion = "neutral";
 
 // 1. Preload: load all sounds before the sketch starts
 function preload() {
@@ -43,6 +44,12 @@ function preload() {
   angerSounds[3] = loadSound('libraries/anger4.mp3');
   angerSounds[4] = loadSound('libraries/anger5.mp3');
   angerSounds[5] = loadSound('libraries/anger6.mp3');
+
+  // shaking for hover
+  shakingSounds[0] = loadSound('libraries/shaking1.mp3');
+  shakingSounds[1] = loadSound('libraries/shaking2.mp3');
+  shakingSounds[2] = loadSound('libraries/shaking3.mp3');
+  shakingSounds[3] = loadSound('libraries/shaking4.mp3');
 }
 
 // 2. Songs switching: Switch background music track by changing emotion
@@ -83,5 +90,14 @@ function playAngerSound() {
   let randomIndex = floor(random(6));
   if (!angerSounds[randomIndex].isPlaying()) {
     angerSounds[randomIndex].play();
+  }
+}
+
+// 7. Shaking sounds: Stop all shaking sounds
+function stopAllShaking() {
+  for (let i = 0; i < shakingSounds.length; i++) {
+    if (shakingSounds[i].isPlaying()) {
+      shakingSounds[i].stop();
+    }
   }
 }
