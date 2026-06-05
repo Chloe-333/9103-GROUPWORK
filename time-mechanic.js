@@ -26,15 +26,14 @@ function initTimeMechanic() {
   lastBeatTime = millis();
 }
 
-function onEmotionChanged(emotion) {
-  emotionStartTime = millis();
-  isDecaying = false;
+function resetInteractionTimer() {
+  emotionStartTime = millis(); 
+  isDecaying = false;          
   decayProgress = 0;
+}
 
-  if (emotion === 'anger')  emotionDecayDelay = 8000;
-  else if (emotion === 'joy')    emotionDecayDelay = 10000;
-  else if (emotion === 'sorrow') emotionDecayDelay = 15000;
-  else                           emotionDecayDelay = 0;
+function onEmotionChanged(emotion) {
+  resetInteractionTimer();
 }
 
 function updateTimeMechanic() {
@@ -108,10 +107,10 @@ function updateHeartbeat() {
 
     if (beatProgress < 1.0) {
       let beatStrength;
-      if (currentEmotion === 'anger')       beatStrength = 0.18;
-      else if (currentEmotion === 'joy')    beatStrength = 0.14;
+      if (currentEmotion === 'anger')       beatStrength = 0.14;
+      else if (currentEmotion === 'joy')    beatStrength = 0.12;
       else if (currentEmotion === 'sorrow') beatStrength = 0.04;
-      else                                  beatStrength = 0.08;
+      else                                  beatStrength = 0.06;
 
       beatScale = 1.0 + sin(PI * beatProgress) * beatStrength;
     } else {
@@ -129,19 +128,25 @@ function updateEmotionDecay() {
     return;
   }
 
-  let timeSinceChange = millis() - emotionStartTime;
+  let timeSinceLastAction = millis() - emotionStartTime;
+  let idleTimeout = 5000; 
 
-  if (timeSinceChange > emotionDecayDelay) {
+  if (timeSinceLastAction > idleTimeout) {
     isDecaying = true;
   }
 
   if (isDecaying) {
-    let decayDuration = 5000;
-    decayProgress = map(timeSinceChange, emotionDecayDelay, emotionDecayDelay + decayDuration, 0, 1);
+    let decayDuration = 2000; 
+    decayProgress = map(timeSinceLastAction, idleTimeout, idleTimeout + decayDuration, 0, 1);
     decayProgress = constrain(decayProgress, 0, 1);
 
     if (decayProgress >= 1) {
       currentEmotion = 'neutral';
+      
+      if (typeof playTrack === 'function') {
+        playTrack(0); 
+      }
+      
       decayProgress = 0;
       isDecaying = false;
     }
