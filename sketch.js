@@ -485,6 +485,12 @@ function mousePressed() {
 // }
 
 function spawnTear() {
+  // a random sorrow sound
+  let randomIndex = floor(random(4));
+  if (!sorrowSounds[randomIndex].isPlaying()) {
+    sorrowSounds[randomIndex].play();
+  }
+
   tears.push({
     x: windowWidth / 2 + random(-35, 35),
     y: windowHeight / 1.7 + 80,
@@ -495,6 +501,12 @@ function spawnTear() {
 }
 
 function spawnJoySpray() {
+  // a random joy sound
+  let randomIndex = floor(random(4));
+  if (!joySounds[randomIndex].isPlaying()) {
+    joySounds[randomIndex].play();
+  }
+
   let cx = windowWidth / 2;
   let cy = windowHeight / 1.7;
 
@@ -521,6 +533,12 @@ function spawnJoySpray() {
 }
 
 function spawnAngerLasers() {
+  // a random anger sound
+  let randomIndex = floor(random(6));
+  if (!angerSounds[randomIndex].isPlaying()) {
+    angerSounds[randomIndex].play();
+  }
+
   let laserWeights = [1, 1.5, 2, 3, 5, 8];
 
   for (let i = 0; i < 4; i++) {
@@ -561,7 +579,14 @@ function mouseHover() {
   //Flinch: when mouse pointer touches the organism
   if (targetRepel > 0.1 && repelFactor < 0.1) {
     flinchTimer = 15; // frames of sharp flinch
+
+    // a random hover sound
+    let randomIndex = floor(random(4));
+    if (!hoverSounds[randomIndex].isPlaying()) {
+      hoverSounds[randomIndex].play();
+    }
   }
+  
   if (flinchTimer > 0) {
     repelFactor = min(repelFactor + 0.3, 1.5); 
     flinchTimer--;
