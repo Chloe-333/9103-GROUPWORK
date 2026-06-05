@@ -2,7 +2,7 @@
 let songs = [];
 let currentTrack = null;
 
-// 新加四组音效声
+// add in four sets of sound effects
 let hoverSounds = [];
 let joySounds = [];
 let sorrowSounds = [];
@@ -27,25 +27,25 @@ function preload() {
   songs[2] = loadSound('libraries/Mice.mp3');
   songs[3] = loadSound('libraries/Mine.mp3');
 
-  // 新加hover音效
+  // hover sound effects
   hoverSounds[0] = loadSound('libraries/hover1.mp3');
   hoverSounds[1] = loadSound('libraries/hover2.mp3');
   hoverSounds[2] = loadSound('libraries/hover3.mp3');
   hoverSounds[3] = loadSound('libraries/hover4.mp3');
 
-  // 新加joy音效
+  // joy sound effects
   joySounds[0] = loadSound('libraries/joy1.mp3');
   joySounds[1] = loadSound('libraries/joy2.mp3');
   joySounds[2] = loadSound('libraries/joy3.mp3');
   joySounds[3] = loadSound('libraries/joy4.mp3');
 
-  // 新加sorrow音效
+  // sorrow sound effects
   sorrowSounds[0] = loadSound('libraries/drip1.mp3');
   sorrowSounds[1] = loadSound('libraries/drip2.mp3');
   sorrowSounds[2] = loadSound('libraries/drip3.mp3');
   sorrowSounds[3] = loadSound('libraries/drip4.mp3');
 
-  // 新加anger音效
+  // anger sound effects
   angerSounds[0] = loadSound('libraries/anger1.mp3');
   angerSounds[1] = loadSound('libraries/anger2.mp3');
   angerSounds[2] = loadSound('libraries/anger3.mp3');
@@ -470,7 +470,7 @@ function mousePressed() {
 // }
 
 function spawnTear() {
-// 新加随机播放一个sorrow音效
+// a random sorrow sound
   let randomIndex = floor(random(4));
   if (!sorrowSounds[randomIndex].isPlaying()) {
     sorrowSounds[randomIndex].play();
@@ -486,7 +486,7 @@ function spawnTear() {
 }
 
 function spawnJoySpray() {
-  // 新加随机播放一个joy音效
+  // a random joy sound
   let randomIndex = floor(random(4));
   if (!joySounds[randomIndex].isPlaying()) {
     joySounds[randomIndex].play();
@@ -518,7 +518,7 @@ function spawnJoySpray() {
 }
 
 function spawnAngerLasers() {
-  // 新加随机播放一个anger音效
+  // a random anger sound
   let randomIndex = floor(random(6));
   if (!angerSounds[randomIndex].isPlaying()) {
     angerSounds[randomIndex].play();
@@ -566,7 +566,7 @@ function mouseHover() {
     flinchTimer = 15; // frames of sharp flinch
   
   
-  // 新加随机播放一个 hover 音效
+  // a random hover sound
     let randomIndex = floor(random(4));
     if (!hoverSounds[randomIndex].isPlaying()) {
       hoverSounds[randomIndex].play();
