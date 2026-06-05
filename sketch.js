@@ -458,6 +458,8 @@ function keyPressed() {
 
 
 function mousePressed() {
+  resetInteractionTimer();
+  
   if (currentEmotion === "sorrow") {
     spawnTear();
   }
