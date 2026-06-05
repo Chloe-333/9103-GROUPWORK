@@ -1,5 +1,10 @@
 // add in musics
 let songs = [];
+let hoverSounds = [];
+let joySounds = [];
+let sorrowSounds = [];
+let angerSounds = [];
+
 let currentTrack = null;
 
 let yoff = 0.0;
@@ -20,6 +25,32 @@ function preload() {
   songs[1] = loadSound('libraries/Door.mp3');
   songs[2] = loadSound('libraries/Mice.mp3');
   songs[3] = loadSound('libraries/Mine.mp3');
+
+  // hover sound effects
+  hoverSounds[0] = loadSound('libraries/hover1.mp3');
+  hoverSounds[1] = loadSound('libraries/hover2.mp3');
+  hoverSounds[2] = loadSound('libraries/hover3.mp3');
+  hoverSounds[3] = loadSound('libraries/hover4.mp3');
+
+  // joy sound effects
+  joySounds[0] = loadSound('libraries/joy1.mp3');
+  joySounds[1] = loadSound('libraries/joy2.mp3');
+  joySounds[2] = loadSound('libraries/joy3.mp3');
+  joySounds[3] = loadSound('libraries/joy4.mp3');
+
+  // sorrow sound effects
+  sorrowSounds[0] = loadSound('libraries/drip1.mp3');
+  sorrowSounds[1] = loadSound('libraries/drip2.mp3');
+  sorrowSounds[2] = loadSound('libraries/drip3.mp3');
+  sorrowSounds[3] = loadSound('libraries/drip4.mp3');
+
+  // anger sound effects
+  angerSounds[0] = loadSound('libraries/anger1.mp3');
+  angerSounds[1] = loadSound('libraries/anger2.mp3');
+  angerSounds[2] = loadSound('libraries/anger3.mp3');
+  angerSounds[3] = loadSound('libraries/anger4.mp3');
+  angerSounds[4] = loadSound('libraries/anger5.mp3');
+  angerSounds[5] = loadSound('libraries/anger6.mp3');
 }
 
 function setup() {
