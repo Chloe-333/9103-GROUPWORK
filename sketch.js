@@ -1,9 +1,11 @@
 // add in musics
+let lastEmotion = "neutral";
 let songs = [];
 let hoverSounds = [];
 let joySounds = [];
 let sorrowSounds = [];
 let angerSounds = [];
+let shakingSounds = [];
 
 let currentTrack = null;
 
@@ -51,6 +53,12 @@ function preload() {
   angerSounds[3] = loadSound('libraries/anger4.mp3');
   angerSounds[4] = loadSound('libraries/anger5.mp3');
   angerSounds[5] = loadSound('libraries/anger6.mp3');
+
+  // shaking sound effects
+  shakingSounds[0] = loadSound('libraries/shaking1.mp3');
+  shakingSounds[1] = loadSound('libraries/shaking2.mp3');
+  shakingSounds[2] = loadSound('libraries/shaking3.mp3');
+  shakingSounds[3] = loadSound('libraries/shaking4.mp3');
 }
 
 function setup() {
@@ -437,6 +445,13 @@ function keyPressed() {
   joySprays = [];
   angerLasers = [];
 
+  // Stopping all shaking sounds when switching emotions
+  for (let i = 0; i < shakingSounds.length; i++) {
+    if (shakingSounds[i].isPlaying()) {
+      shakingSounds[i].stop();
+    }
+  }
+
   if (key === '0') {
     currentEmotion = "neutral";
     playTrack(0);
@@ -591,6 +606,37 @@ function mouseHover() {
     }
   }
   
+  // create a loopp layback while the mouse is hovering on the organism
+  if (targetRepel > 0) {
+    // Stop the old shaking sounds when emotion changes
+    if (currentEmotion !== lastEmotion) {
+      for (let i = 0; i < shakingSounds.length; i++) {
+        if (shakingSounds[i].isPlaying()) {
+          shakingSounds[i].stop();
+        }
+      }
+      lastEmotion = currentEmotion;
+    }
+
+    let shakingIndex = 0;
+    if (currentEmotion === "joy")    shakingIndex = 1;
+    if (currentEmotion === "sorrow") shakingIndex = 2;
+    if (currentEmotion === "anger")  shakingIndex = 3;
+
+    if (!shakingSounds[shakingIndex].isPlaying()) {
+      shakingSounds[shakingIndex].loop();
+    }
+  }
+
+  if (targetRepel === 0) {
+    for (let i = 0; i < shakingSounds.length; i++) {
+      if (shakingSounds[i].isPlaying()) {
+        shakingSounds[i].stop();
+      }
+    }
+    lastEmotion = currentEmotion;
+  }
+
   if (flinchTimer > 0) {
     repelFactor = min(repelFactor + 0.3, 1.5); 
     flinchTimer--;
