@@ -107,10 +107,10 @@ function updateHeartbeat() {
 
     if (beatProgress < 1.0) {
       let beatStrength;
-      if (currentEmotion === 'anger')       beatStrength = 0.18;
-      else if (currentEmotion === 'joy')    beatStrength = 0.14;
+      if (currentEmotion === 'anger')       beatStrength = 0.14;
+      else if (currentEmotion === 'joy')    beatStrength = 0.12;
       else if (currentEmotion === 'sorrow') beatStrength = 0.04;
-      else                                  beatStrength = 0.08;
+      else                                  beatStrength = 0.06;
 
       beatScale = 1.0 + sin(PI * beatProgress) * beatStrength;
     } else {
