@@ -237,7 +237,7 @@ function drawSharpLaser(cx, cy, angle, startR, endR, h, s, b, alpha, weight) {
   for (let i = 0; i <= segments; i++) {
     let t = i / segments;
     let r = lerp(startR, endR, t);
-    let jitter = sin(frameCount * 0.16 + i * 2.1 + angle) * 4;
+    let jitter = sin(frameCount * 0.16 + i * 2.1 + angle) * 5;
 
     let x = cx + cos(angle) * r + cos(angle + HALF_PI) * jitter;
     let y = cy + sin(angle) * r + sin(angle + HALF_PI) * jitter;
@@ -514,7 +514,15 @@ function spawnAngerLasers() {
   // a random anger sound
   playAngerSound();
 
-  let laserWeights = [1, 1.5, 2, 3, 5, 8];
+  let laserWeights = [
+  1,
+  1.5,
+  2,
+  3,
+  4.5,
+  6,
+  7
+];
 
   for (let i = 0; i < 4; i++) {
     angerLasers.push({
