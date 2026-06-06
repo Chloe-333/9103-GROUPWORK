@@ -328,12 +328,17 @@ function drawOrganism() {
     else baseHue = 261;
 
     let audioBrightness = map(bassEnergy, 0, 255, 12, 40);
-
+    
+    let baseBrightness = lerp(65, 25, getGrowProgress());
+    let finalBrightness = baseBrightness + (audioBrightness * 0.5);
+   
     if (currentEmotion === "anger") {
-      fill(350, 40, 40, alpha);
-    } else {
-      fill(baseHue + hueShift, 65, audioBrightness, alpha);
-    }
+          // Deepen the crimson hue as the organism matures during the growth stage
+          let angerBri = lerp(60, 30, getGrowProgress());
+          fill(350, 50, angerBri, alpha);
+        } else {
+          fill(baseHue + hueShift, 65, finalBrightness, alpha);
+        }
 
     beginShape();
 

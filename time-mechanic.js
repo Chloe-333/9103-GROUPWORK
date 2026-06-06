@@ -2,6 +2,7 @@
 let lifeStartTime;
 let lifecycleAlpha = 0;
 let lifecycleRadiusScale = 1.0;
+let growProgress = 0;
 
 const BIRTH_DUR = 10000;
 const GROW_DUR = 20000;
@@ -43,26 +44,45 @@ function updateTimeMechanic() {
   updateEmotionDecay();
 }
 
-// 1. Lifecycle: handles fade-in/out and sizing over time
+// 1. Lifecycle: Handles morphological evolution over time
 function updateLifeCycle() {
   let age = millis() - lifeStartTime;
 
+  // Stage 1: Birth
   if (age < BIRTH_DUR) {
     lifecycleAlpha = map(age, 0, BIRTH_DUR, 0, 70);
     lifecycleRadiusScale = map(age, 0, BIRTH_DUR, 0.2, 1.0);
+    growProgress = 0; 
   } 
+  // Stage 2: Growth
+  else if (age < BIRTH_DUR + GROW_DUR) {
+    lifecycleAlpha = 70;
+    lifecycleRadiusScale = 1.0; // Size plateaus while internal features mature
+    
+    let growAge = age - BIRTH_DUR;
+    growProgress = growAge / GROW_DUR; 
+  }
+  // Stage 3: Maturation
   else if (age < BIRTH_DUR + GROW_DUR + MATURE_DUR) {
     lifecycleAlpha = 70;
     lifecycleRadiusScale = 1.0;
+    growProgress = 1.0;
   } 
+  // Stage 4: Senescence
   else {
     let ageStart = BIRTH_DUR + GROW_DUR + MATURE_DUR;
+    
     lifecycleAlpha = map(age, ageStart, ageStart + AGE_DUR, 70, 20);
     lifecycleAlpha = constrain(lifecycleAlpha, 20, 70);
 
     lifecycleRadiusScale = map(age, ageStart, ageStart + AGE_DUR, 1.0, 0.6);
     lifecycleRadiusScale = constrain(lifecycleRadiusScale, 0.6, 1.0);
+    growProgress = 1.0;
   }
+}
+
+function getGrowProgress() {
+  return growProgress;
 }
 
 // 2. Breathing: continuous loop based on emotion speed/depth
@@ -164,4 +184,8 @@ function getDecayedNoiseAmp(emotionAmp, neutralAmp) {
 
 function getLifecycleAlpha() {
   return lifecycleAlpha;
+}
+
+function getGrowProgress() {
+  return growProgress;
 }
