@@ -329,6 +329,12 @@ function drawOrganism() {
 
     let audioBrightness = map(bassEnergy, 0, 255, 12, 40);
 
+    if (currentEmotion === "anger") {
+      fill(15, 5, 10, alpha);
+    } else {
+      fill(baseHue + hueShift, 65, audioBrightness, alpha);
+    }
+
     fill(baseHue + hueShift, 50, audioBrightness, alpha);
 
     beginShape();
