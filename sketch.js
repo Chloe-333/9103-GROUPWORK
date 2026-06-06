@@ -85,10 +85,14 @@ function draw() {
 
 //changing background gradient argument using if, else if and else
 function drawEmotionBackground() {
+  //Audio drives background radius: bass energy expands the gradient
+  let bassEnergy = getBassEnergy();
+  let gradientRadius = map(bassEnergy, 0, 255, 700, 1000);
+  
   if (currentEmotion === "joy") {
     radialGradient(
       windowWidth / 2, windowHeight / 1.7, 100,
-      windowWidth / 2, windowHeight / 1.7, 800,
+      windowWidth / 2, windowHeight / 1.7, gradientRadius,
       color(260, 95, 95),
       color(50, 70, 100),
       color(320, 65, 85)
@@ -98,7 +102,7 @@ function drawEmotionBackground() {
   else if (currentEmotion === "sorrow") {
     radialGradient(
       windowWidth / 2, windowHeight / 1.7, 100,
-      windowWidth / 2, windowHeight / 1.7, 800,
+      windowWidth / 2, windowHeight / 1.7, gradientRadius,
       color(170, 35, 88),
       color(0, 0, 14),
       color(220, 20, 68)
@@ -108,7 +112,7 @@ function drawEmotionBackground() {
   else if (currentEmotion === "anger") {
     radialGradient(
       windowWidth / 2, windowHeight / 1.7, 100,
-      windowWidth / 2, windowHeight / 1.7, 800,
+      windowWidth / 2, windowHeight / 1.7, gradientRadius,
       color(260, 22, 48),
       color(5, 75, 100),
       color(320, 65, 85)
@@ -118,7 +122,7 @@ function drawEmotionBackground() {
   else {
     radialGradient(
       windowWidth / 2, windowHeight / 1.7, 100,
-      windowWidth / 2, windowHeight / 1.7, 800,
+      windowWidth / 2, windowHeight / 1.7, gradientRadius,
       color(261, 30, 50),
       color(171, 35, 94),
       color(5, 47, 99)
@@ -313,7 +317,19 @@ function drawOrganism() {
     // Dynamic alpha mapping driven by lifecycle state
     let alpha = map(layer, 10, 0, 0, maxLifecycleAlpha);
 
-    fill(0, 0, 12, alpha);
+    // Audio changes color of the organism based on bass energy
+    let bassEnergy = getBassEnergy();
+    let hueShift = map(bassEnergy, 0, 255, 0, 40);
+
+    let baseHue;
+    if (currentEmotion === "joy")    baseHue = 260;
+    else if (currentEmotion === "sorrow") baseHue = 185;
+    else if (currentEmotion === "anger")  baseHue = 5;
+    else baseHue = 261;
+
+    let audioBrightness = map(bassEnergy, 0, 255, 12, 40);
+
+    fill(baseHue + hueShift, 50, audioBrightness, alpha);
 
     beginShape();
 
