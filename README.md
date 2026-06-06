@@ -48,17 +48,27 @@ To avoid the chaotic and glitchy look of standard random numbers, the core organ
 
 4. Custom Radial Gradients:
  We bypassed standard solid fills by interfacing directly with the browser's native canvas features right inside p5.js using drawingContext.createRadialGradient. This decision enabled us to programmatically blend customized multi-colored radial background rings that transition seamlessly based on system environment variables.
+
+ 5. Audio-Driven Visuals: We used p5.FFT to extract bass frequency energy from the background music in real time, then mapped it using map() to drive visual properties across the organism and background. A key decision was connecting the analyser dynamically by .connect(fft) on each track switch, rather than a single time binding, to ensure the FFT always reads the correct track as emotional states change.
+
 ---
 ## Part 3: **Mechanics**
 
 ### Mechanic 1 — qlyu0817-*Audio*
-The audio mechanic drives the emotional atmosphere of the piece through two layers of sound. After entering the page, a gentle ambient track plays automatically, establishing a neutral mood. When the user selects an emotion from happiness, sadness, anger and fear, the background music transitions immediately to a corresponding track that reflects the emotional state. Additionally, when the user hovers over the digital pet, a unique sound effect is triggered, with each emotion producing a distinctly different response. 
+The audio mechanic was built based on the two core ideas of real-time frequency analysis and reactive sound design. To make a sense of live on the organism, the built-in p5.FFT class of p5.js was used to read the frequency of the background music. There is also a smoothing value of 0.8 to ensure smooth transitions between each frames, and 128 bins for balanaced frenquency resolution. The fft.getEnergy("bass") method extracts the low-frequency energy from each frame, which is then mapped using p5's map() function to drive the organism's shifts on colour, saturation, and brightness. The expansion and contraction of the radial background gradient changes were set under the same method. Audio tracks are loaded in preload() using loadSound() and switched dynamically through .connect(fft), ensuring the analyser always reads the currently playing track. On top of that, the mechanic manages a layered sound system where sound.loop(), sound.stop(), and sound.isPlaying() control background music and hover sounds across all four emotional states, making the creature feel genuinely responsive to both the music and the user.
 
-- **Pictures**
-    - *Picture 1*
-![An image of audio example 1](READMEImages/audioexample1.jpg)
-    - *Picture 2*
-![An image of audio example 2](READMEImages/audioexample2.jpg)
+- **p5.js Link References**
+    - *p5.FFT*
+![p5.FFT link](https://p5js.org/reference/p5.sound/p5.FFT/)
+    - *p5.FFTgetEnergy()*
+![p5.FFTgetEnergy() link]( https://p5js.org/reference/p5.FFT/getEnergy/)
+    - *loadSound()*
+![loadSound() link](https://p5js.org/reference/p5/loadSound/)
+    - *map()*
+![map() link](https://p5js.org/reference/p5/map/)
+    - *p5.SoundFile loop()/stop()/isPlaying()*
+![p5.SoundFile loop()/stop()/isPlaying() link](https://p5js.org/reference/p5.SoundFile/loop/)
+
 
 ### Mechanic 2 — jwan0684-*Time-based*
 My time-based mechanic controls how the visual system changes over time. It includes a lifecycle system, breathing motion, heartbeat pulses, and emotional decay. 
@@ -87,6 +97,14 @@ We have used Claude for our project, we have used it to understand, write and de
 
 2) mouseHover: The initial understanding of this function was retrived at https://p5js.org/reference/p5.Element/mouseOver/. To make the organism react to the mouse by first calculating the straight line from the cursor to the organism with Pythagorean theorem. If the distance is within 300px, the 'targetRepel' is mapped inversley. When the mouse is close enough to repel when the organism is in a relaxed state (i. e repelFactor is less than 0.1), the flinching motion is sharperned and spikes to +0.3 per frame. Once flinching motion is complete, repelFactor is eased with 'lerp()' with 5% blend factor.
 
+3) Dynamic FFT connection: Referred from https://p5js.org/reference/p5.sound/p5.FFT/, the method helped with connecting audio tracks dynamically to the FFT analyser using .connect(fft) inside playTrack(), so that the analyser updates correctly each time the background music switches between emotional states.
+
+4) Bass energy to visual mapping: Referred from https://p5js.org/reference/p5.FFT/getEnergy/, the method helped with mapping the bass energy output from fft.getEnergy("bass") to the organism's colour, saturation, and brightness inside drawOrganism(), creating a visible response to the music each frame.
+
+5) Audio-driven background gradient: Referred from https://p5js.org/reference/p5/map/, it helped with mapping the same bass energy value to the radial gradient radius inside drawEmotionBackground(), so the background expands and contracts in response to the music.
+
+
+
 
 ## Part 5: **External references**
 ### p5.js Reference
@@ -99,23 +117,24 @@ We have used Claude for our project, we have used it to understand, write and de
 - map()
 - lerp()
 - constrain()
+- getEnergy()
 
 These functions were used to create timed animation, lifecycle transitions, breathing motion, heartbeat pulses, and emotional decay behaviour throughout the project.
 
-2. Gradient Background: https://www.youtube.com/watch?v=-MUOweQ6wac&t=1s
-3. Blob: https://www.youtube.com/watch?v=rX5p-QRP6R4&t=523s
-4. mouseHover: https://p5js.org/reference/p5.Element/mouseOver/
+1. Gradient Background: https://www.youtube.com/watch?v=-MUOweQ6wac&t=1s
+2. Blob: https://www.youtube.com/watch?v=rX5p-QRP6R4&t=523s
+3. mouseHover: https://p5js.org/reference/p5.Element/mouseOver/
+4. Bass energy to visual mapping: https://www.youtube.com/watch?v=ATLhkFcQZN0
+5. Audio-driven background gradient: https://www.youtube.com/watch?v=VUvVFOYmwgk&list=PLaPCMjX1ETdOQWorX-vcbMM6X-kdmVUAx
 
 ## Part 6: **Interaction instructions**
 Wait for the ambient soundtrack to begin.
 Press:
+0 = Netural
 1 = Joy
 2 = Sorrow
 3 = Anger
-4 = Fear
-Hover the mouse over the organism to trigger ripple effects and interactive sound feedback.
-Observe how the organism responds through changes in movement, colour, breathing rhythm, heartbeat, and emotional state.
-Stay within the experience to witness automatic time-based events, lifecycle changes, and emotional decay back to a neutral state.
+Hover the mouse over the organism to trigger a flinch reaction and interactive sound feedback. Click on the organism to interact. In the emotion of Joy, particles burst outward; in Sorrow, tears fall and create ripples; in Anger, laser beams are fired outward. Observe how the organism responds through changes in movement, colour, breathing rhythm, and heartbeat. Stay within the experience to witness automatic time-based lifecycle changes and emotional decay back to a neutral state after a period of inactivity.
 
 ## Part 7: **Putting It Together**
 All four mechanics work together in one interactive environment. Mouse movement and clicking allow users to interact with the abstract form directly. Audio creates sound feedback and changes visual reactions. Perlin noise and randomness make the movement feel organic and unpredictable. The time-based mechanic triggers automatic events, visual effects, and sound changes over time, helping the experience feel alive and always changing. Together, the mechanics create a connected emotional audiovisual experience through motion, interaction, sound, and atmosphere. 
