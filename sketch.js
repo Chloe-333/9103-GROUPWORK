@@ -334,7 +334,6 @@ function drawOrganism() {
     } else {
       fill(baseHue + hueShift, 65, audioBrightness, alpha);
     }
-    console.log(alpha);
 
     beginShape();
 
