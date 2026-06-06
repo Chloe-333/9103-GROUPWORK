@@ -49,7 +49,8 @@ To avoid the chaotic and glitchy look of standard random numbers, the core organ
 4. Custom Radial Gradients:
  We bypassed standard solid fills by interfacing directly with the browser's native canvas features right inside p5.js using drawingContext.createRadialGradient. This decision enabled us to programmatically blend customized multi-colored radial background rings that transition seamlessly based on system environment variables.
 
- 5. Audio-Driven Visuals: We used p5.FFT to extract bass frequency energy from the background music in real time, then mapped it using map() to drive visual properties across the organism and background. A key decision was connecting the analyser dynamically by .connect(fft) on each track switch, rather than a single time binding, to ensure the FFT always reads the correct track as emotional states change.
+ 5. Audio-Driven Visuals:
+We used p5.FFT to extract bass frequency energy from the background music in real time, then mapped it using map() to drive visual properties across the organism and background. A key decision was connecting the analyser dynamically by .connect(fft) on each track switch, rather than a single time binding, to ensure the FFT always reads the correct track as emotional states change.
 
 ---
 ## Part 3: **Mechanics**

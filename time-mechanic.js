@@ -5,7 +5,7 @@ let lifecycleRadiusScale = 1.0;
 
 const BIRTH_DUR = 10000;
 const GROW_DUR = 20000;
-const MATURE_DUR = 30000;
+const MATURE_DUR = 60000;
 const AGE_DUR = 30000;
 
 let breathScale = 1.0;
