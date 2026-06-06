@@ -371,12 +371,13 @@ function drawTears() {
 
     if (t.y >= waterLevel) {
       ripples.push({
-        x: t.x,
-        y: waterLevel,
-        w: 20,
-        h: 6,
-        alpha: 90
-      });
+      x: t.x,
+      y: waterLevel,
+      w: t.size * 0.8,
+      h: t.size * 0.25,
+      growth: map(t.size, 12, 26, 2, 6),
+      alpha: 90
+    });
 
       t.dead = true;
     }
@@ -395,8 +396,8 @@ function drawRipples() {
     ellipse(r.x, r.y, r.w, r.h);
     ellipse(r.x, r.y, r.w * 1.6, r.h * 1.6);
 
-    r.w += 5;
-    r.h += 1.2;
+   r.w += r.growth;
+r.h += r.growth * 0.25;
     r.alpha -= 2;
   }
 
@@ -475,7 +476,7 @@ function spawnTear() {
   tears.push({
     x: windowWidth / 2 + random(-35, 35),
     y: windowHeight / 1.7 + 80,
-    size: random(18, 32),
+    size: random(12, 26),
     speed: random(4, 7),
     alpha: 90
   });
