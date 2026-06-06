@@ -161,7 +161,7 @@ function drawJoySprays() {
     p.y += p.vy + sin(noiseAngle) * 0.6;
 
     p.size += 0.08;
-    p.alpha -= 1.4;
+    p.alpha -= 0.25;
     p.noiseOffset += 0.02;
   }
 
@@ -491,7 +491,7 @@ function spawnJoySpray() {
   for (let i = 0; i < 80; i++) {
     let angle = random(TWO_PI);
     let startRadius = random(140, 250);
-    let speed = random(1.2, 4.2);
+    let speed = random(0.8, 2.8);
 
     let joyHues = [180, 320, 260, 50];
 
