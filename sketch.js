@@ -373,8 +373,8 @@ function drawTears() {
       ripples.push({
       x: t.x,
       y: waterLevel,
-      w: t.size * 0.8,
-      h: t.size * 0.25,
+      w: t.size * 1.5,
+      h: t.size * 0.5,
       growth: map(t.size, 12, 26, 2, 6),
       alpha: 90
     });
@@ -397,7 +397,7 @@ function drawRipples() {
     ellipse(r.x, r.y, r.w * 1.6, r.h * 1.6);
 
    r.w += r.growth;
-r.h += r.growth * 0.25;
+    r.h += r.growth * 0.3;
     r.alpha -= 2;
   }
 
