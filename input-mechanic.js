@@ -166,7 +166,7 @@ function mouseHover() {
   let dy = mouseY - windowHeight / 1.7;
   let dist = sqrt(dx * dx + dy * dy);
 
-  let hoverThreshold = 300; // how close mouse needs to be
+  let hoverThreshold =350; // how close mouse needs to be
   let targetRepel = dist < hoverThreshold ? map(dist, 0, hoverThreshold, 1, 0) : 0;
 
   //Flinch: when mouse pointer touches the organism
@@ -215,7 +215,7 @@ function mouseHover() {
     flinchTimer--;
   } else {
     // moves away after flinching
-    repelFactor = lerp(repelFactor, targetRepel, 0.05);
+    repelFactor = lerp(repelFactor, targetRepel, 0.07);
   }
 }
 
