@@ -1,11 +1,3 @@
-// add in musics
-let songs = [];
-let hoverSounds = [];
-let joySounds = [];
-let sorrowSounds = [];
-let angerSounds = [];
-
-let currentTrack = null;
 
 let yoff = 0.0;
 let circles = [];
@@ -19,39 +11,6 @@ let repelFactor = 0;
 let flinchTimer = 0;
 let baseRadius = 250;
 
-// preload musics
-function preload() {
-  songs[0] = loadSound('libraries/Key.mp3');
-  songs[1] = loadSound('libraries/Door.mp3');
-  songs[2] = loadSound('libraries/Mice.mp3');
-  songs[3] = loadSound('libraries/Mine.mp3');
-
-  // hover sound effects
-  hoverSounds[0] = loadSound('libraries/hover1.mp3');
-  hoverSounds[1] = loadSound('libraries/hover2.mp3');
-  hoverSounds[2] = loadSound('libraries/hover3.mp3');
-  hoverSounds[3] = loadSound('libraries/hover4.mp3');
-
-  // joy sound effects
-  joySounds[0] = loadSound('libraries/joy1.mp3');
-  joySounds[1] = loadSound('libraries/joy2.mp3');
-  joySounds[2] = loadSound('libraries/joy3.mp3');
-  joySounds[3] = loadSound('libraries/joy4.mp3');
-
-  // sorrow sound effects
-  sorrowSounds[0] = loadSound('libraries/drip1.mp3');
-  sorrowSounds[1] = loadSound('libraries/drip2.mp3');
-  sorrowSounds[2] = loadSound('libraries/drip3.mp3');
-  sorrowSounds[3] = loadSound('libraries/drip4.mp3');
-
-  // anger sound effects
-  angerSounds[0] = loadSound('libraries/anger1.mp3');
-  angerSounds[1] = loadSound('libraries/anger2.mp3');
-  angerSounds[2] = loadSound('libraries/anger3.mp3');
-  angerSounds[3] = loadSound('libraries/anger4.mp3');
-  angerSounds[4] = loadSound('libraries/anger5.mp3');
-  angerSounds[5] = loadSound('libraries/anger6.mp3');
-}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -98,15 +57,7 @@ function setup() {
 
 // play music when image loaded
  playTrack(0);
-}
-
-// switch songs
-function playTrack(index) {
-  if (currentTrack && currentTrack.isPlaying()) {
-    currentTrack.stop();
-  }
-  currentTrack = songs[index];
-  currentTrack.loop();
+ initAudio();
 }
 
 function draw() {
@@ -135,10 +86,14 @@ function draw() {
 
 //changing background gradient argument using if, else if and else
 function drawEmotionBackground() {
+  //Audio drives background radius: bass energy expands the gradient
+  let bassEnergy = getBassEnergy();
+  let gradientRadius = map(bassEnergy, 0, 255, 700, 1000);
+  
   if (currentEmotion === "joy") {
     radialGradient(
       windowWidth / 2, windowHeight / 1.7, 100,
-      windowWidth / 2, windowHeight / 1.7, 800,
+      windowWidth / 2, windowHeight / 1.7, gradientRadius,
       color(260, 95, 95),
       color(50, 70, 100),
       color(320, 65, 85)
@@ -148,7 +103,7 @@ function drawEmotionBackground() {
   else if (currentEmotion === "sorrow") {
     radialGradient(
       windowWidth / 2, windowHeight / 1.7, 100,
-      windowWidth / 2, windowHeight / 1.7, 800,
+      windowWidth / 2, windowHeight / 1.7, gradientRadius,
       color(170, 35, 88),
       color(0, 0, 14),
       color(220, 20, 68)
@@ -158,7 +113,7 @@ function drawEmotionBackground() {
   else if (currentEmotion === "anger") {
     radialGradient(
       windowWidth / 2, windowHeight / 1.7, 100,
-      windowWidth / 2, windowHeight / 1.7, 800,
+      windowWidth / 2, windowHeight / 1.7, gradientRadius,
       color(260, 22, 48),
       color(5, 75, 100),
       color(320, 65, 85)
@@ -168,7 +123,7 @@ function drawEmotionBackground() {
   else {
     radialGradient(
       windowWidth / 2, windowHeight / 1.7, 100,
-      windowWidth / 2, windowHeight / 1.7, 800,
+      windowWidth / 2, windowHeight / 1.7, gradientRadius,
       color(261, 30, 50),
       color(171, 35, 94),
       color(5, 47, 99)
@@ -207,7 +162,7 @@ function drawJoySprays() {
     p.y += p.vy + sin(noiseAngle) * 0.6;
 
     p.size += 0.08;
-    p.alpha -= 1.4;
+    p.alpha -= 0.25;
     p.noiseOffset += 0.02;
   }
 
@@ -283,7 +238,7 @@ function drawSharpLaser(cx, cy, angle, startR, endR, h, s, b, alpha, weight) {
   for (let i = 0; i <= segments; i++) {
     let t = i / segments;
     let r = lerp(startR, endR, t);
-    let jitter = sin(frameCount * 0.16 + i * 2.1 + angle) * 4;
+    let jitter = sin(frameCount * 0.16 + i * 2.1 + angle) * 5;
 
     let x = cx + cos(angle) * r + cos(angle + HALF_PI) * jitter;
     let y = cy + sin(angle) * r + sin(angle + HALF_PI) * jitter;
@@ -329,20 +284,24 @@ function drawOrganism() {
   let coweredRadius = timedBaseRadius * map(repelFactor, 0, 1, 1, 1);
   let targetNoiseAmp, noiseSpeed, noiseScale;
 
+   // Get bass energy from current background music to drive organism
+  let bassEnergy = getBassEnergy();
+  let audioAmp = map(bassEnergy, 0, 255, 0, 60);
+
   if (currentEmotion === "anger") {
-    targetNoiseAmp = map(repelFactor, 0, 1, 55, 105);  // jagged, volatile
-    noiseSpeed     = 0.04;                             // fast rippling
-    noiseScale     = 0.25;                             // tight, dense ripples
+    targetNoiseAmp = map(repelFactor, 0, 1, 55, 105) + audioAmp;
+    noiseSpeed     = 0.04;
+    noiseScale     = 0.25;
   } else if (currentEmotion === "joy") {
-    targetNoiseAmp = map(repelFactor, 0, 1, 20, 70);   // bouncy but smooth
-    noiseSpeed     = 0.035;                            // medium pace (Optimized from 0.5 to match time mechanic)
-    noiseScale     = 0.08;                             // wide, rolling waves
+    targetNoiseAmp = map(repelFactor, 0, 1, 20, 70) + audioAmp;
+    noiseSpeed     = 0.035;
+    noiseScale     = 0.08;
   } else if (currentEmotion === "sorrow") {
-    targetNoiseAmp = map(repelFactor, 0, 1, 10, 30);   // slow, heavy drooping
-    noiseSpeed     = 0.005;                            // very slow
-    noiseScale     = 0.12;                             // gentle undulation
+    targetNoiseAmp = map(repelFactor, 0, 1, 10, 30) + audioAmp;
+    noiseSpeed     = 0.005;
+    noiseScale     = 0.12;
   } else {
-    targetNoiseAmp = map(repelFactor, 0, 1, 30, 80);   // neutral default
+    targetNoiseAmp = map(repelFactor, 0, 1, 30, 80) + audioAmp;
     noiseSpeed     = 0.01;
     noiseScale     = 0.1;
   }
@@ -360,7 +319,23 @@ function drawOrganism() {
     // Dynamic alpha mapping driven by lifecycle state
     let alpha = map(layer, 10, 0, 0, maxLifecycleAlpha);
 
-    fill(0, 0, 12, alpha);
+    // Audio changes color of the organism based on bass energy
+    let bassEnergy = getBassEnergy();
+    let hueShift = map(bassEnergy, 0, 255, 0, 40);
+
+    let baseHue;
+    if (currentEmotion === "joy")    baseHue = 260;
+    else if (currentEmotion === "sorrow") baseHue = 185;
+    else if (currentEmotion === "anger")  baseHue = 5;
+    else baseHue = 261;
+
+    let audioBrightness = map(bassEnergy, 0, 255, 12, 40);
+
+    if (currentEmotion === "anger") {
+      fill(350, 40, 40, alpha);
+    } else {
+      fill(baseHue + hueShift, 65, audioBrightness, alpha);
+    }
 
     beginShape();
 
@@ -397,12 +372,13 @@ function drawTears() {
 
     if (t.y >= waterLevel) {
       ripples.push({
-        x: t.x,
-        y: waterLevel,
-        w: 20,
-        h: 6,
-        alpha: 90
-      });
+      x: t.x,
+      y: waterLevel,
+      w: t.size * 1.5,
+      h: t.size * 0.5,
+      growth: map(t.size, 12, 26, 2, 6),
+      alpha: 90
+    });
 
       t.dead = true;
     }
@@ -421,8 +397,8 @@ function drawRipples() {
     ellipse(r.x, r.y, r.w, r.h);
     ellipse(r.x, r.y, r.w * 1.6, r.h * 1.6);
 
-    r.w += 5;
-    r.h += 1.2;
+   r.w += r.growth;
+    r.h += r.growth * 0.3;
     r.alpha -= 2;
   }
 
@@ -431,31 +407,7 @@ function drawRipples() {
   noStroke();
 }
 
-function keyPressed() {
-  circles = [];
-  tears = [];
-  ripples = [];
-  joySprays = [];
-  angerLasers = [];
 
-  if (key === '0') {
-    currentEmotion = "neutral";
-    playTrack(0);
-  }
-  if (key === '1') {
-    currentEmotion = "joy";
-    playTrack(1);
-  }
-  if (key === '2') {
-    currentEmotion = "sorrow";
-    playTrack(2);
-  }
-  if (key === '3') {
-    currentEmotion = "anger";
-    playTrack(3);
-  }
-  onEmotionChanged(currentEmotion);
-}
 
 
 function mousePressed() {
@@ -597,6 +549,10 @@ function mouseHover() {
     repelFactor = lerp(repelFactor, targetRepel, 0.05);
   }
 }
+
+
+//https://p5js.org/reference/p5.Element/mouseOver/
+
 
 // https://www.youtube.com/watch?v=-MUOweQ6wac&t=1s
 // gradients used in the background
