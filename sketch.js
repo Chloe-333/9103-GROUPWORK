@@ -510,7 +510,7 @@ function drawInstructions() {
   fill(0, 0, 15, 70);
   textAlign(CENTER);
   textSize(14);
-  textFont('Space mono');
+  textFont('Courier New bold');
 
   text(
     'Press 0 = PRIMARY | 1 = JOY | 2 = SORROW | 3 = ANGER | Click to interact',
