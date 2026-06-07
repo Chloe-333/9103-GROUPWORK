@@ -71,9 +71,21 @@ The audio mechanic was built based on the two core ideas of real-time frequency 
 
 
 ### Mechanic 2 — jwan0684-*Time-based*
-My time-based mechanic controls how the visual system changes over time. It includes a lifecycle system, breathing motion, heartbeat pulses, and emotional decay. 
+My time-based mechanic serves as the master clock and biological life-support engine of the organism. It independently regulates four temporal behaviors: a global lifestyle progression, harmonic breathing, threshold-triggered heartbeats, and a emotional decay fallback.
+1. Organic Respiration (Breathing Motion):
+To prevent the organism from appearing static in its neutral state, I utilized `millis()` inside `getTimedRadius()` to drive continuous harmonic oscillation via `sin()`. By transforming linear execution time into a smooth, periodic sine wave, the baseline radius of the biological membrane expands and contracts automatically, mimicking natural breathing.
+2. Cardiovascular Simulation (Heartbeat Pulses):
+ I programmed a non-blocking interval timer that tracks threshold milestones. When elapsed time hits the designated pulse interval, the mechanic triggers a momentary, sharp exponential spike in the organism's vector scaling before rapidly dampening it. This produces a visceral, periodic "thump" that visually simulates a living heartbeat.
+3. Temporal Lifecycle Progression (Ageing System):
+I established a macro-lifecycle loop that tracks the total uptime of the program. This system gradually shifts the global baseline scale and alpha opacity variables over extended periods. It smoothly morphs the entity through conceptual phases of birth, structural maturity, and eventual fading, ensuring the visual experience evolves over time.
+4. Synchronized Emotional Lifespan & Decay:
+To solve the user-experience drag caused by uneven audio track lengths (such as the 4-minute 41-second Sorrow track), I designed a strict, authoritative 107,000ms expiration timer within `updateEmotionDecay()`. Once `millis() - emotionStartTime` exceeds this limit, `isDecaying` flips to true. I then utilized `map()` and `constrain()` to linearly interpolate `decayProgress` from `0` to `1` over a strict 2000ms window. This forces the heightened visual properties (morphing speed, color saturation, and spiky noise amplitudes) to gracefully flatten back to their neutral baselines, while simultaneously triggering `playTrack(0)` to seamlessly truncate the overflowing audio stream.
 
-The lifecycle gradually changes the scale and transparency of the main visual form, creating a sense of birth, maturity, and ageing. The breathing and heartbeat systems use time-based oscillation and timed intervals to make the form feel alive. The emotion decay system allows emotional states such as anger, joy, and sorrow to fade back to neutral after different durations, so the interaction feels temporary and evolving rather than static.
+- **p5.js Link References**
+    - [p5.js millis() Reference](https://p5js.org/reference/p5/millis/)
+    - [p5.js sin() Reference](https://p5js.org/reference/p5/sin/)
+    - [p5.js map() Reference](https://p5js.org/reference/p5/map/)
+    - [p5.js constrain() Reference](https://p5js.org/reference/p5/constrain/)
 
 ### Mechanic 3 — skar0152-*Perlin Noise + Randomness*
 The Perlin noise mechanic will explore reactions to user movements and input. This is particularly intended to make the reactions natural. The mechanism will create different frequency of ripple effect based on the user's input or movement. Additionally, the noise would have a standby mode where the lines move in a rhythmic pulsing manner to denote breathing or appearance of being alive. 
