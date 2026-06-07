@@ -86,6 +86,9 @@ To solve the user-experience drag caused by uneven audio track lengths (such as 
     - [p5.js sin() Reference](https://p5js.org/reference/p5/sin/)
     - [p5.js map() Reference](https://p5js.org/reference/p5/map/)
     - [p5.js constrain() Reference](https://p5js.org/reference/p5/constrain/)
+    - [p5.js PI Reference](https://p5js.org/reference/p5/PI/)
+    - [p5.js Conditional Statements Reference](https://p5js.org/reference/p5/conditional/)
+    - [p5.js Conditionals & Relational Operators Tutorial](https://p5js.org/learn/conditionals.html)
 
 ### Mechanic 3 — skar0152-*Perlin Noise + Randomness*
 The Perlin noise mechanic will explore reactions to user movements and input. This is particularly intended to make the reactions natural. The mechanism will create different frequency of ripple effect based on the user's input or movement. Additionally, the noise would have a standby mode where the lines move in a rhythmic pulsing manner to denote breathing or appearance of being alive. 
