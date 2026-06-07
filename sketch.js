@@ -6,6 +6,7 @@ let ripples = [];
 let joySprays = [];
 let angerLasers = [];
 let currentEmotion = "neutral";
+let lastEmotion = "neutral";
 
 let repelFactor = 0;
 let flinchTimer = 0;
@@ -87,6 +88,7 @@ function draw() {
 //changing background gradient argument using if, else if and else
 function drawEmotionBackground() {
   //Audio drives background radius: bass energy expands the gradient
+  // AI Acknowledgement 5: Audio-driven background gradient
   let bassEnergy = getBassEnergy();
   let gradientRadius = map(bassEnergy, 0, 255, 700, 1000);
   
@@ -284,7 +286,8 @@ function drawOrganism() {
   let coweredRadius = timedBaseRadius * map(repelFactor, 0, 1, 1, 1);
   let targetNoiseAmp, noiseSpeed, noiseScale;
 
-   // Get bass energy from current background music to drive organism
+  // Get bass energy from current background music to drive organism
+  // AI Acknowledgement 4: Bass energy to visual mapping
   let bassEnergy = getBassEnergy();
   let audioAmp = map(bassEnergy, 0, 255, 0, 60);
 
@@ -539,6 +542,31 @@ function mouseHover() {
     if (!hoverSounds[randomIndex].isPlaying()) {
       hoverSounds[randomIndex].play();
     }
+  }
+
+  if (targetRepel > 0) {
+    if (currentEmotion !== lastEmotion) {
+      for (let i = 0; i < shakingSounds.length; i++) {
+        if (shakingSounds[i].isPlaying()) shakingSounds[i].stop();
+      }
+      lastEmotion = currentEmotion;
+    }
+
+    let shakingIndex = 0;
+    if (currentEmotion === "joy")    shakingIndex = 1;
+    if (currentEmotion === "sorrow") shakingIndex = 2;
+    if (currentEmotion === "anger")  shakingIndex = 3;
+
+    if (!shakingSounds[shakingIndex].isPlaying()) {
+      shakingSounds[shakingIndex].loop();
+    }
+  }
+
+  if (targetRepel === 0) {
+    for (let i = 0; i < shakingSounds.length; i++) {
+      if (shakingSounds[i].isPlaying()) shakingSounds[i].stop();
+    }
+    lastEmotion = currentEmotion;
   }
   
   if (flinchTimer > 0) {
