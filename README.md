@@ -112,7 +112,6 @@ Press:
 1 = Joy
 2 = Sorrow
 3 = Anger
-4 = Fear
 Hover the mouse over the organism to trigger ripple effects and interactive sound feedback.
 Observe how the organism responds through changes in movement, colour, breathing rhythm, heartbeat, and emotional state.
 Stay within the experience to witness automatic time-based events, lifecycle changes, and emotional decay back to a neutral state.

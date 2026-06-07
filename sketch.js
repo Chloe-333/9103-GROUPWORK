@@ -314,6 +314,7 @@ function drawSharpLaser(cx, cy, angle, startR, endR, h, s, b, alpha, weight) {
 }
 
 // Organism made using blob: https://www.youtube.com/watch?v=rX5p-QRP6R4&t=523s
+// AI Acknowledgement - 1
 function drawOrganism() {
   push();
   translate(windowWidth / 2, windowHeight / 1.7);
@@ -458,8 +459,6 @@ function keyPressed() {
 
 
 function mousePressed() {
-  resetInteractionTimer();
-
   if (currentEmotion === "sorrow") {
     spawnTear();
   }
@@ -568,7 +567,8 @@ function drawInstructions() {
   );
 }
 
-//https://p5js.org/reference/p5.Element/mouseOver/
+// https://p5js.org/reference/p5.Element/mouseOver/
+// AI Acknowledgement - 2
 function mouseHover() {
   // Mouse positioning
   let dx = mouseX - windowWidth / 2;
@@ -582,8 +582,6 @@ function mouseHover() {
   if (targetRepel > 0.1 && repelFactor < 0.1) {
     flinchTimer = 15; // frames of sharp flinch
 
-    resetInteractionTimer();
-    
     // a random hover sound
     let randomIndex = floor(random(4));
     if (!hoverSounds[randomIndex].isPlaying()) {
