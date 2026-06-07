@@ -18,6 +18,10 @@ function keyPressed() {
       shakingSounds[i].stop();
     }
   }
+  //Reset timer and decay on key press
+  emotionStartTime = millis(); 
+  isDecaying = false;
+  decayProgress = 0;
 
   if (key === '0') {
     currentEmotion = "neutral";
