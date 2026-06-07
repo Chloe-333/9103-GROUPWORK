@@ -521,34 +521,7 @@ function drawInstructions() {
 
 // https://p5js.org/reference/p5.Element/mouseOver/
 // AI Acknowledgement - 2
-function mouseHover() {
-  // Mouse positioning
-  let dx = mouseX - windowWidth / 2;
-  let dy = mouseY - windowHeight / 1.7;
-  let dist = sqrt(dx * dx + dy * dy);
 
-  let hoverThreshold = 300; // how close mouse needs to be
-  let targetRepel = dist < hoverThreshold ? map(dist, 0, hoverThreshold, 1, 0) : 0;
-
-  //Flinch: when mouse pointer touches the organism
-  if (targetRepel > 0.1 && repelFactor < 0.1) {
-    flinchTimer = 15; // frames of sharp flinch
-
-    // a random hover sound
-    let randomIndex = floor(random(4));
-    if (!hoverSounds[randomIndex].isPlaying()) {
-      hoverSounds[randomIndex].play();
-    }
-  }
-  
-  if (flinchTimer > 0) {
-    repelFactor = min(repelFactor + 0.3, 1.5); 
-    flinchTimer--;
-  } else {
-    // moves away after flinching
-    repelFactor = lerp(repelFactor, targetRepel, 0.05);
-  }
-}
 
 
 //https://p5js.org/reference/p5.Element/mouseOver/
