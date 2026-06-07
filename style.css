@@ -45,8 +45,8 @@ canvas {
   position: absolute;
   top: 4%;
   right: 3%;
-  width: clamp(200px, 22vw, 300px);    /* was hardcoded 18% — too narrow */
-  font-size: clamp(8px, 0.75vw, 10px); /* was clamp(8px, 40vw, 10px) — broken */
+  width: clamp(200px, 22vw, 300px); 
+  font-size: clamp(8px, 0.75vw, 10px); 
   line-height: 1.55;
   text-align: left;
   overflow: visible;
@@ -57,14 +57,20 @@ canvas {
   top: 18%;
   left: 3%;
   width: 94%;
+
+  /* creates a flexbox, which refers to a flexible container */
   display: flex;
   justify-content: space-between;
   flex-wrap: nowrap;
   gap: 1%;
+
+  /* adding borders and padding */
   border-top: 1px solid #232323;
   border-bottom: 1px solid #232323;
   padding-top: 0.4%;
   padding-bottom: 0.4%;
+  
+  /* typography formating */
   font-family: "Space Mono", "Courier New", monospace;
   font-weight: 700;
   font-size: clamp(7px, 0.7vw, 13px);
