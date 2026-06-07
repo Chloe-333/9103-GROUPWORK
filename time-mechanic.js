@@ -5,7 +5,7 @@ let lifecycleRadiusScale = 1.0;
 
 const BIRTH_DUR = 10000;
 const GROW_DUR = 20000;
-const MATURE_DUR = 60000;
+const MATURE_DUR = 1800000;
 const AGE_DUR = 30000;
 
 let breathScale = 1.0;
@@ -121,6 +121,7 @@ function updateHeartbeat() {
 }
 
 // 4. Emotion Decay: timer to fade back to neutral
+//Refactored with assistance from Gemini AI to truncate overflowing sound assets and force smooth fallback.
 function updateEmotionDecay() {
   if (currentEmotion === 'neutral') {
     decayProgress = 0;
