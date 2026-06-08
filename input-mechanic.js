@@ -1,3 +1,7 @@
+// AI Acknowledgement:
+// ChatGPT assisted with refactoring this user input logic into a separate
+// input-mechanic.js file and helped structure the keyboard, click, and hover
+// functions so they clearly match the user input mechanic required by the brief.
 // input-mechanic.js
 // Requires in sketch.js:
 // let lastEmotion = "neutral";
@@ -130,6 +134,9 @@ function spawnJoySpray() {
 
 
 // Anger state: creates laser beams from the centre.
+// AI Acknowledgement:
+// ChatGPT assisted with organising the laser generation
+// logic into a reusable helper function.
 function spawnAngerLasers() {
   // a random anger sound
   playAngerSound();
@@ -163,6 +170,14 @@ function spawnAngerLasers() {
 // - visual distortion through repelFactor
 // - a short flinch reaction through flinchTimer
 // - hover/shaking sounds if audio is available
+// External reference + AI Acknowledgement:
+// The hover interaction was informed by the p5.js mouseOver reference:
+// https://p5js.org/reference/p5.Element/mouseOver/
+// ChatGPT helped adapt the idea into a distance-based hover system.
+// Instead of using a DOM mouseOver event, this function calculates the
+// cursor distance from the organism centre, maps that distance into
+// targetRepel, and uses lerp() to create a smoother flinch reaction.
+
 // ------------------------------------------------------------
 function mouseHover() {
   // Mouse positioning

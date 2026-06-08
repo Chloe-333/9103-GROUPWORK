@@ -96,21 +96,38 @@ The Perlin noise mechanic will explore reactions to user movements and input. Th
 The noise is also applied directly to visual properties allowing the ripple effect to be expressed in an exaggerated, gestural way that emphasizes movement and energy. 
 
 ### Mechanic 4 — yyao0435-*User Input*
-The user input mechanism enables users to interact directly with the digital organism through keyboard and mouse control. Different keyboard numbers will represent different emotions, such as happiness, sadness, and anger. When the user presses one of the keys, the organism will change its color and behavior. 
+My user input mechanic allows the audience to directly communicate with the digital organism through keyboard, mouse click, and mouse hover interactions. The keyboard acts as the main emotional controller. Pressing `0`, `1`, `2`, and `3` switches the organism between Primary, Joy, Sorrow, and Anger. Each switch clears the previous visual effects, resets the decay timer, changes the current emotional state, and triggers the matching audio track. This prevents different emotional effects from overlapping too much and keeps each state visually clear.
 
-Mouse interaction can also create connections between users and organisms. When the user hovers the mouse over the organism, a ripple-like visual effect will appear around its body. 
+Mouse clicking creates a different response depending on the active emotion. In Joy, the click generates a colourful particle spray using random angles, speed, size, hue, and opacity, creating an energetic burst around the organism. In Sorrow, the click creates falling tears with different sizes and speeds, which later connect to ripple effects in the main drawing system. In Anger, the click generates several laser beams with varied thickness and direction, making the organism feel more aggressive and unstable.
 
-This mechanism supports the project's concept of emotional expression and interaction by allowing users to influence the organism's emotions and responses in real time.
+Mouse hover is used as a more subtle form of interaction. The code calculates the distance between the cursor and the organism using the cursor’s x/y position and the organism’s centre point. When the mouse enters the hover threshold, `targetRepel` is mapped from distance, causing the organism to flinch and visually react through `repelFactor`. The hover interaction also triggers short sound feedback and looping shaking sounds based on the current emotion. This makes the organism feel aware of the user, rather than only responding to direct clicks.
+
+This mechanic supports the concept of an emotional digital lifeform by turning simple user actions into different behavioural responses. Instead of treating keyboard and mouse input as basic controls, the interaction is designed to feel like communication with a reactive organism.
+
+* **p5.js Link References**
+
+  * [p5.js keyPressed() Reference](https://p5js.org/reference/p5/keyPressed/)
+  * [p5.js mousePressed() Reference](https://p5js.org/reference/p5/mousePressed/)
+  * [p5.js mouseX Reference](https://p5js.org/reference/p5/mouseX/)
+  * [p5.js mouseY Reference](https://p5js.org/reference/p5/mouseY/)
+  * [p5.js random() Reference](https://p5js.org/reference/p5/random/)
+  * [p5.js map() Reference](https://p5js.org/reference/p5/map/)
+  * [p5.js lerp() Reference](https://p5js.org/reference/p5/lerp/)
+  * [p5.js millis() Reference](https://p5js.org/reference/p5/millis/)
+  * [p5.js TWO_PI Reference](https://p5js.org/reference/p5/TWO_PI/)
+  * [p5.js sin() Reference](https://p5js.org/reference/p5/sin/)
+  * [p5.js cos() Reference](https://p5js.org/reference/p5/cos/)
+
 
 - **Pictures**
 ![An image of userinput example](READMEImages/userinput.jpg)
 
 ---
 ## Part 4: **AI acknowledgement**
-We have used Claude for our project, we have used it to understand, write and debug the code in the following lines:
+We used both Claude and ChatGPT to assist with code development, debugging, refactoring, documentation, and mechanic modularisation, we have used them to understand, write and debug the code in the following lines:
 1) The Organism: While the orginal code is derived from https://www.youtube.com/watch?v=rX5p-QRP6R4&t=523s, it was modified in multiple ways to incorporate into our concept. The blob is built on polar coordinates, defined by a radius and an angle which is then converted to x/y through " x = r.cos(a)" and " y = r.sin(a)". The noise offset is intended to create inward and outward motion. As the angle advances around the circle, xoff steps through noise space: a bigger step (anger - 0.25) hits more distant, jagged values producing spiky edges; a smaller step (joy - 0.08) samples nearby values for gentle waves. yoff advances every frame, sliding through the noise field to animate the shape over time. The 10 layers all use the same noise but scale radius by layer/10 and fade from transparent to opaque outward-in, creating the glowing depth effect.
 
-2) mouseHover: The initial understanding of this function was retrived at https://p5js.org/reference/p5.Element/mouseOver/. To make the organism react to the mouse by first calculating the straight line from the cursor to the organism with Pythagorean theorem. If the distance is within 300px, the 'targetRepel' is mapped inversley. When the mouse is close enough to repel when the organism is in a relaxed state (i. e repelFactor is less than 0.1), the flinching motion is sharperned and spikes to +0.3 per frame. Once flinching motion is complete, repelFactor is eased with 'lerp()' with 5% blend factor.
+2) mouseHover: The initial understanding of this function was retrived at https://p5js.org/reference/p5.Element/mouseOver/. To make the organism react to the mouse by first calculating the straight line from the cursor to the organism with Pythagorean theorem. If the distance is within 350px, the 'targetRepel' is mapped inversley. When the mouse is close enough to repel when the organism is in a relaxed state (i. e repelFactor is less than 0.1), the flinching motion is sharperned and spikes to +0.3 per frame. Once flinching motion is complete, repelFactor is eased with 'lerp()' with 7% blend factor.
 
 3) Dynamic FFT connection: Referred from https://p5js.org/reference/p5.sound/p5.FFT/, the method helped with connecting audio tracks dynamically to the FFT analyser using .connect(fft) inside playTrack(), so that the analyser updates correctly each time the background music switches between emotional states.
 
@@ -141,11 +158,15 @@ These functions were used to create timed animation, lifecycle transitions, brea
 3. mouseHover: https://p5js.org/reference/p5.Element/mouseOver/
 4. Bass energy to visual mapping: https://www.youtube.com/watch?v=ATLhkFcQZN0
 5. Audio-driven background gradient: https://www.youtube.com/watch?v=VUvVFOYmwgk&list=PLaPCMjX1ETdOQWorX-vcbMM6X-kdmVUAx
+6. User Input Interaction: https://p5js.org/reference/p5.Element/mouseOver/
+
+The mouseOver() reference was used as inspiration when researching hover-based interaction in p5.js. The final implementation was adapted into a custom distance-based hover system using mouse position, distance calculation, map(), and lerp() to create a flinch reaction and emotional feedback.
+
 
 ## Part 6: **Interaction instructions**
 Wait for the ambient soundtrack to begin.
 Press:
-0 = Netural
+0 = Neutural
 1 = Joy
 2 = Sorrow
 3 = Anger
