@@ -171,9 +171,6 @@ Press:
 2 = Sorrow
 3 = Anger
 
-Hover the mouse over the organism to trigger ripple effects and interactive sound feedback.
-Observe how the organism responds through changes in movement, colour, breathing rhythm, heartbeat, and emotional state.
-Stay within the experience to witness automatic time-based events, lifecycle changes, and emotional decay back to a neutral state.
 
 Hover the mouse over the organism to trigger a flinch reaction and interactive sound feedback. Click on the organism to interact. In the emotion of Joy, particles burst outward; in Sorrow, tears fall and create ripples; in Anger, laser beams are fired outward. Observe how the organism responds through changes in movement, colour, breathing rhythm, and heartbeat. Stay within the experience to witness automatic time-based lifecycle changes and emotional decay back to a neutral state after a period of inactivity.
 
