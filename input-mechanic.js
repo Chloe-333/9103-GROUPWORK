@@ -178,6 +178,8 @@ function spawnAngerLasers() {
 // cursor distance from the organism centre, maps that distance into
 // targetRepel, and uses lerp() to create a smoother flinch reaction.
 
+// AI Acknowledgement - 2
+
 // ------------------------------------------------------------
 function mouseHover() {
   // Mouse positioning
@@ -248,11 +250,19 @@ function drawInstructions() {
   fill(0, 0, 15, 70);
   textAlign(CENTER);
   textSize(14);
-  textFont('Space mono');
+  textFont('Courier New Bold');
 
   text(
     'Press 0 = PRIMARY | 1 = JOY | 2 = SORROW | 3 = ANGER | Click to interact',
     width / 2,
     height - 30
   );
+}
+
+// ----------------------------------------
+// 6. CANVAS RESIZE
+// Keeps canvas full-window on browser resize.
+// ----------------------------------------
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }

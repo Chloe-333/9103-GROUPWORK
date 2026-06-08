@@ -1,19 +1,13 @@
 # 9103-GROUPWORK
-# Final Project Pitch
 
-4. AI acknowledgement: If you used ChatGPT, Claude, DeepSeek, or any other AI tool to help generate code, you must reference it here and explain what it was used for and how the generated code works. This must also be commented in the actual code (e.g. // this code was generated with the help of ChatGPT and does xyz).
-5. External references: If you borrowed or were influenced by code found online, in a book, or from any other source, reference it with a link and an explanation. This must also be commented in the code (e.g. // this technique is from www.source-url.com).
-
-## Inspirations
+## Part 1: **Inspirations**
 - **Links**
     - *Link 1* 
 [Inspiration link1](https://www.tiktok.com/@gaabz.drop/video/7637272522060287239?q=Jarvis&t=1778729950655)
     - *Link 2*
 [Inspiration link2](https://www.tiktok.com/@projecthailmary/video/7620935910770707743?q=Project%20Hail%20Mary%20Rocky&t=1778729762426)
 
-
-## Part 1: **Project Direction**
-### Project Path
+### Introduction
 For our Creative Coding final project, we aim to create an immersive and interactive experience that is built on abstract ideas like experiencing emotions.  
 
 Our concept takes inspiration from various characters that portray other worldly characteristics like Rocky from Project Hail Mary, Stitch from Lilo and Stitch and Emi from Ultraman: Rising. The idea is to portray emotions without the use of the word, and communication can be extended to visual, sound, and reaction.  
@@ -30,7 +24,6 @@ Further we began ideating and working out the interactions in meaningful ways.
 
 ![An image of project script](READMEImages/Ideation.png)
 
-### Vision
     - *Picture 1*
 ![An image of moodboard](READMEImages/moodboard.jpg)
 
@@ -91,9 +84,11 @@ To solve the user-experience drag caused by uneven audio track lengths (such as 
     - [p5.js Conditionals & Relational Operators Tutorial](https://p5js.org/learn/conditionals.html)
 
 ### Mechanic 3 — skar0152-*Perlin Noise + Randomness*
-The Perlin noise mechanic will explore reactions to user movements and input. This is particularly intended to make the reactions natural. The mechanism will create different frequency of ripple effect based on the user's input or movement. Additionally, the noise would have a standby mode where the lines move in a rhythmic pulsing manner to denote breathing or appearance of being alive. 
+The Perlin noise mechanic explored reactions to user movements and input. This was particularly intended to make the reactions natural and less mechanical.
 
-The noise is also applied directly to visual properties allowing the ripple effect to be expressed in an exaggerated, gestural way that emphasizes movement and energy. 
+Inside drawOrganism(), noise(xoff, yoff) samples a shifting noise field along the organism's circular edge. A key decision was making the noise step size emotion-specific — a larger step in anger (0.25) hits more distant, jagged values producing spiky edges, while a smaller step in joy (0.08) samples nearby values for gentle waves. This meant the organism's texture could communicate mood directly without needing any extra visual elements. The perlin noise was also intended to be used to portray organism's breathing, however as we discussed as a team it felt more reliable to use time based mechanic for that specific aspect.
+
+Throughout this process, it was interesting to note how all mechanics work in sync or rather relied on other to bring the orgainsm to life. For example, perlin noise relied on user input for certain interactions like mouse hover. When the user hovers close, repelFactor increases, which feeds into the noise amplitude inside drawOrganism(), making the surface more agitated. The hover detection itself is handled by the user input mechanic, but the visual response runs through the noise system.The movement of the vertices worked to a certain level but when the breathing aspect was introduced through the time based mechanic, the organism truly felt alive.
 
 ### Mechanic 4 — yyao0435-*User Input*
 My user input mechanic allows the audience to directly communicate with the digital organism through keyboard, mouse click, and mouse hover interactions. The keyboard acts as the main emotional controller. Pressing `0`, `1`, `2`, and `3` switches the organism between Primary, Joy, Sorrow, and Anger. Each switch clears the previous visual effects, resets the decay timer, changes the current emotional state, and triggers the matching audio track. This prevents different emotional effects from overlapping too much and keeps each state visually clear.
@@ -124,7 +119,8 @@ This mechanic supports the concept of an emotional digital lifeform by turning s
 
 ---
 ## Part 4: **AI acknowledgement**
-We used both Claude, Gemini and ChatGPT to assist with code development, debugging, refactoring, documentation, and mechanic modularisation, we have used them to understand, write and debug the code in the following lines:
+We have used Claude, Gemini and ChatGPT to assist with code development, debugging, refactoring, documentation, and mechanic modularisation, we have used them to understand, write and debug the code in the following lines:
+
 1) The Organism: While the orginal code is derived from https://www.youtube.com/watch?v=rX5p-QRP6R4&t=523s, it was modified in multiple ways to incorporate into our concept. The blob is built on polar coordinates, defined by a radius and an angle which is then converted to x/y through " x = r.cos(a)" and " y = r.sin(a)". The noise offset is intended to create inward and outward motion. As the angle advances around the circle, xoff steps through noise space: a bigger step (anger - 0.25) hits more distant, jagged values producing spiky edges; a smaller step (joy - 0.08) samples nearby values for gentle waves. yoff advances every frame, sliding through the noise field to animate the shape over time. The 10 layers all use the same noise but scale radius by layer/10 and fade from transparent to opaque outward-in, creating the glowing depth effect.
 
 2) mouseHover: The initial understanding of this function was retrived at https://p5js.org/reference/p5.Element/mouseOver/. To make the organism react to the mouse by first calculating the straight line from the cursor to the organism with Pythagorean theorem. If the distance is within 350px, the 'targetRepel' is mapped inversley. When the mouse is close enough to repel when the organism is in a relaxed state (i. e repelFactor is less than 0.1), the flinching motion is sharperned and spikes to +0.3 per frame. Once flinching motion is complete, repelFactor is eased with 'lerp()' with 7% blend factor.
