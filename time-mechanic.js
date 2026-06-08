@@ -1,3 +1,9 @@
+// ACADEMIC INTEGRITY & AI ACKNOWLEDGEMENT:
+// This time-mechanic script was architected and developed independently to 
+// govern the organism's biological systems. Generative AI was utilized strictly 
+// as a logical sounding board to refactor the conditional branch structures (else if blocks) 
+// and to correct algorithmic edge cases regarding state truncation during the sudden transitions of emotional decay.
+
 // Time state variables
 let lifeStartTime;
 let lifecycleAlpha = 0;
@@ -18,7 +24,6 @@ let beatStartTime = 0;
 const BEAT_DUR = 400;
 
 let emotionStartTime = 0;
-let emotionDecayDelay = 0;
 let isDecaying = false;
 let decayProgress = 0;
 
@@ -107,6 +112,9 @@ function updateBreathing() {
 }
 
 // 3. Heartbeat: sharp interval pulse
+// AI ACKNOWLEDGEMENT:
+// The conditional branch structure (else if blocks) determining emotion-specific 
+// heartbeat intervals and intensities was optimized with conceptual guidance from AI.
 function updateHeartbeat() {
   let beatInterval;
 
@@ -140,8 +148,10 @@ function updateHeartbeat() {
   }
 }
 
-// 4. Emotion Decay: timer to fade back to neutral
-//Refactored with assistance from Gemini AI to truncate overflowing sound assets and force smooth fallback.
+// AI ACKNOWLEDGEMENT: This specialized updateEmotionDecay function was 
+// refactored with the assistance of GenAI (Gemini). It solves an audio overflow
+// bug by setting a hard limit (107000ms) to force a smooth linear interpolation 
+// (via lerp/map) back to the neutral state, preventing user-experience drag.
 function updateEmotionDecay() {
   if (currentEmotion === 'neutral') {
     decayProgress = 0;
