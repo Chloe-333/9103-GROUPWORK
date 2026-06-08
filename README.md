@@ -51,16 +51,11 @@ To avoid the chaotic and glitchy look of standard random numbers, the core organ
 The audio mechanic was built based on the two core ideas of real-time frequency analysis and reactive sound design. To make a sense of live on the organism, the built-in p5.FFT class of p5.js was used to read the frequency of the background music. There is also a smoothing value of 0.8 to ensure smooth transitions between each frames, and 128 bins for balanaced frenquency resolution. The fft.getEnergy("bass") method extracts the low-frequency energy from each frame, which is then mapped using p5's map() function to drive the organism's shifts on colour, saturation, and brightness. The expansion and contraction of the radial background gradient changes were set under the same method. Audio tracks are loaded in preload() using loadSound() and switched dynamically through .connect(fft), ensuring the analyser always reads the currently playing track. On top of that, the mechanic manages a layered sound system where sound.loop(), sound.stop(), and sound.isPlaying() control background music and hover sounds across all four emotional states, making the creature feel genuinely responsive to both the music and the user.
 
 - **p5.js Link References**
-    - *p5.FFT*
-![p5.FFT link](https://p5js.org/reference/p5.sound/p5.FFT/)
-    - *p5.FFTgetEnergy()*
-![p5.FFTgetEnergy() link]( https://p5js.org/reference/p5.FFT/getEnergy/)
-    - *loadSound()*
-![loadSound() link](https://p5js.org/reference/p5/loadSound/)
-    - *map()*
-![map() link](https://p5js.org/reference/p5/map/)
-    - *p5.SoundFile loop()/stop()/isPlaying()*
-![p5.SoundFile loop()/stop()/isPlaying() link](https://p5js.org/reference/p5.SoundFile/loop/)
+    - [p5.FFT link](https://p5js.org/reference/p5.sound/p5.FFT/)
+    - [p5.FFTgetEnergy() link]( https://p5js.org/reference/p5.FFT/getEnergy/)
+    - [loadSound() link](https://p5js.org/reference/p5/loadSound/)
+    - [map() link](https://p5js.org/reference/p5/map/)
+    - [p5.SoundFile loop()/stop()/isPlaying() link](https://p5js.org/reference/p5.SoundFile/loop/)
 
 
 ### Mechanic 2 — jwan0684-*Time-based*
