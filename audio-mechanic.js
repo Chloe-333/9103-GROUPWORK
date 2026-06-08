@@ -9,7 +9,6 @@ let joySounds = [];
 let sorrowSounds = [];
 let angerSounds = [];
 let shakingSounds = [];
-let lastEmotion = "neutral";
 
 // 1. Preload: load all sounds before the sketch starts
 function preload() {
@@ -64,6 +63,7 @@ function playTrack(index) {
   currentTrack.loop();
 
   //Connect fft to current track
+  //AI Acknowledgement 3 Dynamic FFT connection
   if(fft){
     currentTrack.connect(fft);
   }

@@ -6,7 +6,7 @@ let growProgress = 0;
 
 const BIRTH_DUR = 10000;
 const GROW_DUR = 20000;
-const MATURE_DUR = 60000;
+const MATURE_DUR = 1800000;
 const AGE_DUR = 30000;
 
 let breathScale = 1.0;
@@ -96,11 +96,11 @@ function updateBreathing() {
     breathSpeed = 0.018;
     breathDepth = 0.08;
   } else if (currentEmotion === 'sorrow') {
-    breathSpeed = 0.008;
-    breathDepth = 0.02;
+    breathSpeed = 0.003;
+    breathDepth = 0.01;
   } else {
-    breathSpeed = 0.015;
-    breathDepth = 0.04;
+    breathSpeed = 0.006;
+    breathDepth = 0.03;
   }
 
   breathScale = 1.0 + sin(millis() * breathSpeed) * breathDepth;
@@ -111,9 +111,9 @@ function updateHeartbeat() {
   let beatInterval;
 
   if (currentEmotion === 'anger')       beatInterval = 1500;
-  else if (currentEmotion === 'joy')    beatInterval = 2000;
-  else if (currentEmotion === 'sorrow') beatInterval = 4000;
-  else                                  beatInterval = 3000;
+  else if (currentEmotion === 'joy')    beatInterval = 4000;
+  else if (currentEmotion === 'sorrow') beatInterval = 7000;
+  else                                  beatInterval = 5000;
 
   if (!isBeat && millis() - lastBeatTime > beatInterval) {
     isBeat = true;
@@ -141,23 +141,24 @@ function updateHeartbeat() {
 }
 
 // 4. Emotion Decay: timer to fade back to neutral
+//Refactored with assistance from Gemini AI to truncate overflowing sound assets and force smooth fallback.
 function updateEmotionDecay() {
   if (currentEmotion === 'neutral') {
     decayProgress = 0;
     isDecaying = false;
     return;
   }
+  let trackDuration = 107000; 
+  let timeElapsed = millis() - emotionStartTime;
 
-  let timeSinceLastAction = millis() - emotionStartTime;
-  let idleTimeout = 5000; 
-
-  if (timeSinceLastAction > idleTimeout) {
+  // 2. Trigger decay after the track duration ends
+  if (timeElapsed > trackDuration) {
     isDecaying = true;
   }
 
   if (isDecaying) {
     let decayDuration = 2000; 
-    decayProgress = map(timeSinceLastAction, idleTimeout, idleTimeout + decayDuration, 0, 1);
+    decayProgress = map(timeElapsed, trackDuration, trackDuration + decayDuration, 0, 1);
     decayProgress = constrain(decayProgress, 0, 1);
 
     if (decayProgress >= 1) {

@@ -6,10 +6,12 @@ let ripples = [];
 let joySprays = [];
 let angerLasers = [];
 let currentEmotion = "neutral";
+let lastEmotion = "neutral";
 
 let repelFactor = 0;
 let flinchTimer = 0;
 let baseRadius = 250;
+
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -86,6 +88,7 @@ function draw() {
 //changing background gradient argument using if, else if and else
 function drawEmotionBackground() {
   //Audio drives background radius: bass energy expands the gradient
+  // AI Acknowledgement 5: Audio-driven background gradient
   let bassEnergy = getBassEnergy();
   let gradientRadius = map(bassEnergy, 0, 255, 700, 1000);
   
@@ -268,6 +271,7 @@ function drawSharpLaser(cx, cy, angle, startR, endR, h, s, b, alpha, weight) {
 }
 
 // Organism made using blob: https://www.youtube.com/watch?v=rX5p-QRP6R4&t=523s
+// AI Acknowledgement - 1
 function drawOrganism() {
   push();
   translate(windowWidth / 2, windowHeight / 1.7);
@@ -282,7 +286,8 @@ function drawOrganism() {
   let coweredRadius = timedBaseRadius * map(repelFactor, 0, 1, 1, 1);
   let targetNoiseAmp, noiseSpeed, noiseScale;
 
-   // Get bass energy from current background music to drive organism
+  // Get bass energy from current background music to drive organism
+  // AI Acknowledgement 4: Bass energy to visual mapping
   let bassEnergy = getBassEnergy();
   let audioAmp = map(bassEnergy, 0, 255, 0, 60);
 
@@ -377,8 +382,8 @@ function drawTears() {
       ripples.push({
       x: t.x,
       y: waterLevel,
-      w: t.size * 0.8,
-      h: t.size * 0.25,
+      w: t.size * 1.5,
+      h: t.size * 0.5,
       growth: map(t.size, 12, 26, 2, 6),
       alpha: 90
     });
@@ -401,7 +406,7 @@ function drawRipples() {
     ellipse(r.x, r.y, r.w * 1.6, r.h * 1.6);
 
    r.w += r.growth;
-r.h += r.growth * 0.25;
+    r.h += r.growth * 0.3;
     r.alpha -= 2;
   }
 
@@ -410,151 +415,12 @@ r.h += r.growth * 0.25;
   noStroke();
 }
 
-function keyPressed() {
-  circles = [];
-  tears = [];
-  ripples = [];
-  joySprays = [];
-  angerLasers = [];
-
-  // Stopping all shaking sounds when switching emotions
-  for (let i = 0; i < shakingSounds.length; i++) {
-    if (shakingSounds[i].isPlaying()) {
-      shakingSounds[i].stop();
-    }
-  }
-
-  if (key === '0') {
-    currentEmotion = "neutral";
-    playTrack(0);
-  }
-  if (key === '1') {
-    currentEmotion = "joy";
-    playTrack(1);
-  }
-  if (key === '2') {
-    currentEmotion = "sorrow";
-    playTrack(2);
-  }
-  if (key === '3') {
-    currentEmotion = "anger";
-    playTrack(3);
-  }
-  onEmotionChanged(currentEmotion);
-}
 
 
-function mousePressed() {
-  resetInteractionTimer();
 
-  if (currentEmotion === "sorrow") {
-    spawnTear();
-  }
 
-  else if (currentEmotion === "joy") {
-    spawnJoySpray();
-  }
-
-  else if (currentEmotion === "anger") {
-    spawnAngerLasers();
-  }
-
-  else {
-    spawnCircle(mouseX, mouseY);
-  }
-}
-
-// function spawnCircle(x, y) {
-//   circles.push({
-//     x: windowWidth / 2,
-//     y: windowHeight / 2,
-//     size: random(15, 60),
-//     noiseOffset: random(1000)
-//   });
-// }
-
-function spawnTear() {
-  // a random sorrow sound
-  playSorrowSound();
-
-  tears.push({
-    x: windowWidth / 2 + random(-35, 35),
-    y: windowHeight / 1.7 + 80,
-    size: random(12, 26),
-    speed: random(4, 7),
-    alpha: 90
-  });
-}
-
-function spawnJoySpray() {
-  // a random joy sound
-  playJoySound();
-
-  let cx = windowWidth / 2;
-  let cy = windowHeight / 1.7;
-
-  for (let i = 0; i < 80; i++) {
-    let angle = random(TWO_PI);
-    let startRadius = random(140, 250);
-    let speed = random(0.8, 2.8);
-
-    let joyHues = [180, 320, 260, 50];
-
-    joySprays.push({
-      x: cx + cos(angle) * startRadius,
-      y: cy + sin(angle) * startRadius,
-      vx: cos(angle) * speed,
-      vy: sin(angle) * speed,
-      size: random(8, 26),
-      h: random(joyHues),
-      s: random(55, 95),
-      b: random(75, 100),
-      alpha: random(45, 80),
-      noiseOffset: random(1000)
-    });
-  }
-}
-
-function spawnAngerLasers() {
-  // a random anger sound
-  playAngerSound();
-
-  let laserWeights = [
-  1,
-  1.5,
-  2,
-  3,
-  4.5,
-  6,
-  7
-];
-
-  for (let i = 0; i < 4; i++) {
-    angerLasers.push({
-      angle: random(TWO_PI),
-      weight: random(laserWeights),
-      birth: millis(),
-      noiseOffset: random(1000),
-      dead: false
-    });
-  }
-}
-
-function drawInstructions() {
-  noStroke();
-  fill(0, 0, 15, 70);
-  textAlign(CENTER);
-  textSize(14);
-  textFont('Space mono');
-
-  text(
-    'Press 0 = PRIMARY | 1 = JOY | 2 = SORROW | 3 = ANGER | Click to interact',
-    width / 2,
-    height - 30
-  );
-}
-
-//https://p5js.org/reference/p5.Element/mouseOver/
+// https://p5js.org/reference/p5.Element/mouseOver/
+// AI Acknowledgement - 2
 function mouseHover() {
   // Mouse positioning
   let dx = mouseX - windowWidth / 2;
@@ -568,20 +434,17 @@ function mouseHover() {
   if (targetRepel > 0.1 && repelFactor < 0.1) {
     flinchTimer = 15; // frames of sharp flinch
 
-    resetInteractionTimer();
-    
     // a random hover sound
-    playHoverSound();
+    let randomIndex = floor(random(4));
+    if (!hoverSounds[randomIndex].isPlaying()) {
+      hoverSounds[randomIndex].play();
+    }
   }
-  
-  // create a loopp layback while the mouse is hovering on the organism
+
   if (targetRepel > 0) {
-    // Stop the old shaking sounds when emotion changes
     if (currentEmotion !== lastEmotion) {
       for (let i = 0; i < shakingSounds.length; i++) {
-        if (shakingSounds[i].isPlaying()) {
-          shakingSounds[i].stop();
-        }
+        if (shakingSounds[i].isPlaying()) shakingSounds[i].stop();
       }
       lastEmotion = currentEmotion;
     }
@@ -598,13 +461,11 @@ function mouseHover() {
 
   if (targetRepel === 0) {
     for (let i = 0; i < shakingSounds.length; i++) {
-      if (shakingSounds[i].isPlaying()) {
-        shakingSounds[i].stop();
-      }
+      if (shakingSounds[i].isPlaying()) shakingSounds[i].stop();
     }
     lastEmotion = currentEmotion;
   }
-
+  
   if (flinchTimer > 0) {
     repelFactor = min(repelFactor + 0.3, 1.5); 
     flinchTimer--;
@@ -613,6 +474,10 @@ function mouseHover() {
     repelFactor = lerp(repelFactor, targetRepel, 0.05);
   }
 }
+
+
+//https://p5js.org/reference/p5.Element/mouseOver/
+
 
 // https://www.youtube.com/watch?v=-MUOweQ6wac&t=1s
 // gradients used in the background

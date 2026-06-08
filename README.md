@@ -49,8 +49,7 @@ To avoid the chaotic and glitchy look of standard random numbers, the core organ
 4. Custom Radial Gradients:
  We bypassed standard solid fills by interfacing directly with the browser's native canvas features right inside p5.js using drawingContext.createRadialGradient. This decision enabled us to programmatically blend customized multi-colored radial background rings that transition seamlessly based on system environment variables.
 
- 5. Audio-Driven Visuals:
-We used p5.FFT to extract bass frequency energy from the background music in real time, then mapped it using map() to drive visual properties across the organism and background. A key decision was connecting the analyser dynamically by .connect(fft) on each track switch, rather than a single time binding, to ensure the FFT always reads the correct track as emotional states change.
+ 5. Audio-Driven Visuals: We used p5.FFT to extract bass frequency energy from the background music in real time, then mapped it using map() to drive visual properties across the organism and background. A key decision was connecting the analyser dynamically by .connect(fft) on each track switch, rather than a single time binding, to ensure the FFT always reads the correct track as emotional states change.
 
 ---
 ## Part 3: **Mechanics**
@@ -72,9 +71,24 @@ The audio mechanic was built based on the two core ideas of real-time frequency 
 
 
 ### Mechanic 2 — jwan0684-*Time-based*
-My time-based mechanic controls how the visual system changes over time. It includes a lifecycle system, breathing motion, heartbeat pulses, and emotional decay. 
+My time-based mechanic serves as the master clock and biological life-support engine of the organism. It independently regulates four temporal behaviors: a global lifestyle progression, harmonic breathing, threshold-triggered heartbeats, and a emotional decay fallback.
+1. Organic Respiration (Breathing Motion):
+To prevent the organism from appearing static in its neutral state, I utilized `millis()` inside `getTimedRadius()` to drive continuous harmonic oscillation via `sin()`. By transforming linear execution time into a smooth, periodic sine wave, the baseline radius of the biological membrane expands and contracts automatically, mimicking natural breathing.
+2. Cardiovascular Simulation (Heartbeat Pulses):
+ I programmed a non-blocking interval timer that tracks threshold milestones. When elapsed time hits the designated pulse interval, the mechanic triggers a momentary, sharp exponential spike in the organism's vector scaling before rapidly dampening it. This produces a visceral, periodic "thump" that visually simulates a living heartbeat.
+3. Temporal Lifecycle Progression (Ageing System):
+I established a macro-lifecycle loop that tracks the total uptime of the program. This system gradually shifts the global baseline scale and alpha opacity variables over extended periods. It smoothly morphs the entity through conceptual phases of birth, structural maturity, and eventual fading, ensuring the visual experience evolves over time.
+4. Synchronized Emotional Lifespan & Decay:
+To solve the user-experience drag caused by uneven audio track lengths (such as the 4-minute 41-second Sorrow track), I designed a strict, authoritative 107,000ms expiration timer within `updateEmotionDecay()`. Once `millis() - emotionStartTime` exceeds this limit, `isDecaying` flips to true. I then utilized `map()` and `constrain()` to linearly interpolate `decayProgress` from `0` to `1` over a strict 2000ms window. This forces the heightened visual properties (morphing speed, color saturation, and spiky noise amplitudes) to gracefully flatten back to their neutral baselines, while simultaneously triggering `playTrack(0)` to seamlessly truncate the overflowing audio stream.
 
-The lifecycle gradually changes the scale and transparency of the main visual form, creating a sense of birth, maturity, and ageing. The breathing and heartbeat systems use time-based oscillation and timed intervals to make the form feel alive. The emotion decay system allows emotional states such as anger, joy, and sorrow to fade back to neutral after different durations, so the interaction feels temporary and evolving rather than static.
+- **p5.js Link References**
+    - [p5.js millis() Reference](https://p5js.org/reference/p5/millis/)
+    - [p5.js sin() Reference](https://p5js.org/reference/p5/sin/)
+    - [p5.js map() Reference](https://p5js.org/reference/p5/map/)
+    - [p5.js constrain() Reference](https://p5js.org/reference/p5/constrain/)
+    - [p5.js PI Reference](https://p5js.org/reference/p5/PI/)
+    - [p5.js Conditional Statements Reference](https://p5js.org/reference/p5/conditional/)
+    - [p5.js Conditionals & Relational Operators Tutorial](https://p5js.org/learn/conditionals.html)
 
 ### Mechanic 3 — skar0152-*Perlin Noise + Randomness*
 The Perlin noise mechanic will explore reactions to user movements and input. This is particularly intended to make the reactions natural. The mechanism will create different frequency of ripple effect based on the user's input or movement. Additionally, the noise would have a standby mode where the lines move in a rhythmic pulsing manner to denote breathing or appearance of being alive. 
@@ -82,21 +96,38 @@ The Perlin noise mechanic will explore reactions to user movements and input. Th
 The noise is also applied directly to visual properties allowing the ripple effect to be expressed in an exaggerated, gestural way that emphasizes movement and energy. 
 
 ### Mechanic 4 — yyao0435-*User Input*
-The user input mechanism enables users to interact directly with the digital organism through keyboard and mouse control. Different keyboard numbers will represent different emotions, such as happiness, sadness, and anger. When the user presses one of the keys, the organism will change its color and behavior. 
+My user input mechanic allows the audience to directly communicate with the digital organism through keyboard, mouse click, and mouse hover interactions. The keyboard acts as the main emotional controller. Pressing `0`, `1`, `2`, and `3` switches the organism between Primary, Joy, Sorrow, and Anger. Each switch clears the previous visual effects, resets the decay timer, changes the current emotional state, and triggers the matching audio track. This prevents different emotional effects from overlapping too much and keeps each state visually clear.
 
-Mouse interaction can also create connections between users and organisms. When the user hovers the mouse over the organism, a ripple-like visual effect will appear around its body. 
+Mouse clicking creates a different response depending on the active emotion. In Joy, the click generates a colourful particle spray using random angles, speed, size, hue, and opacity, creating an energetic burst around the organism. In Sorrow, the click creates falling tears with different sizes and speeds, which later connect to ripple effects in the main drawing system. In Anger, the click generates several laser beams with varied thickness and direction, making the organism feel more aggressive and unstable.
 
-This mechanism supports the project's concept of emotional expression and interaction by allowing users to influence the organism's emotions and responses in real time.
+Mouse hover is used as a more subtle form of interaction. The code calculates the distance between the cursor and the organism using the cursor’s x/y position and the organism’s centre point. When the mouse enters the hover threshold, `targetRepel` is mapped from distance, causing the organism to flinch and visually react through `repelFactor`. The hover interaction also triggers short sound feedback and looping shaking sounds based on the current emotion. This makes the organism feel aware of the user, rather than only responding to direct clicks.
+
+This mechanic supports the concept of an emotional digital lifeform by turning simple user actions into different behavioural responses. Instead of treating keyboard and mouse input as basic controls, the interaction is designed to feel like communication with a reactive organism.
+
+* **p5.js Link References**
+
+  * [p5.js keyPressed() Reference](https://p5js.org/reference/p5/keyPressed/)
+  * [p5.js mousePressed() Reference](https://p5js.org/reference/p5/mousePressed/)
+  * [p5.js mouseX Reference](https://p5js.org/reference/p5/mouseX/)
+  * [p5.js mouseY Reference](https://p5js.org/reference/p5/mouseY/)
+  * [p5.js random() Reference](https://p5js.org/reference/p5/random/)
+  * [p5.js map() Reference](https://p5js.org/reference/p5/map/)
+  * [p5.js lerp() Reference](https://p5js.org/reference/p5/lerp/)
+  * [p5.js millis() Reference](https://p5js.org/reference/p5/millis/)
+  * [p5.js TWO_PI Reference](https://p5js.org/reference/p5/TWO_PI/)
+  * [p5.js sin() Reference](https://p5js.org/reference/p5/sin/)
+  * [p5.js cos() Reference](https://p5js.org/reference/p5/cos/)
+
 
 - **Pictures**
 ![An image of userinput example](READMEImages/userinput.jpg)
 
 ---
 ## Part 4: **AI acknowledgement**
-We have used Claude for our project, we have used it to understand, write and debug the code in the following lines:
+We used both Claude and ChatGPT to assist with code development, debugging, refactoring, documentation, and mechanic modularisation, we have used them to understand, write and debug the code in the following lines:
 1) The Organism: While the orginal code is derived from https://www.youtube.com/watch?v=rX5p-QRP6R4&t=523s, it was modified in multiple ways to incorporate into our concept. The blob is built on polar coordinates, defined by a radius and an angle which is then converted to x/y through " x = r.cos(a)" and " y = r.sin(a)". The noise offset is intended to create inward and outward motion. As the angle advances around the circle, xoff steps through noise space: a bigger step (anger - 0.25) hits more distant, jagged values producing spiky edges; a smaller step (joy - 0.08) samples nearby values for gentle waves. yoff advances every frame, sliding through the noise field to animate the shape over time. The 10 layers all use the same noise but scale radius by layer/10 and fade from transparent to opaque outward-in, creating the glowing depth effect.
 
-2) mouseHover: The initial understanding of this function was retrived at https://p5js.org/reference/p5.Element/mouseOver/. To make the organism react to the mouse by first calculating the straight line from the cursor to the organism with Pythagorean theorem. If the distance is within 300px, the 'targetRepel' is mapped inversley. When the mouse is close enough to repel when the organism is in a relaxed state (i. e repelFactor is less than 0.1), the flinching motion is sharperned and spikes to +0.3 per frame. Once flinching motion is complete, repelFactor is eased with 'lerp()' with 5% blend factor.
+2) mouseHover: The initial understanding of this function was retrived at https://p5js.org/reference/p5.Element/mouseOver/. To make the organism react to the mouse by first calculating the straight line from the cursor to the organism with Pythagorean theorem. If the distance is within 350px, the 'targetRepel' is mapped inversley. When the mouse is close enough to repel when the organism is in a relaxed state (i. e repelFactor is less than 0.1), the flinching motion is sharperned and spikes to +0.3 per frame. Once flinching motion is complete, repelFactor is eased with 'lerp()' with 7% blend factor.
 
 3) Dynamic FFT connection: Referred from https://p5js.org/reference/p5.sound/p5.FFT/, the method helped with connecting audio tracks dynamically to the FFT analyser using .connect(fft) inside playTrack(), so that the analyser updates correctly each time the background music switches between emotional states.
 
@@ -127,15 +158,22 @@ These functions were used to create timed animation, lifecycle transitions, brea
 3. mouseHover: https://p5js.org/reference/p5.Element/mouseOver/
 4. Bass energy to visual mapping: https://www.youtube.com/watch?v=ATLhkFcQZN0
 5. Audio-driven background gradient: https://www.youtube.com/watch?v=VUvVFOYmwgk&list=PLaPCMjX1ETdOQWorX-vcbMM6X-kdmVUAx
+6. User Input Interaction: https://p5js.org/reference/p5.Element/mouseOver/
+
+The mouseOver() reference was used as inspiration when researching hover-based interaction in p5.js. The final implementation was adapted into a custom distance-based hover system using mouse position, distance calculation, map(), and lerp() to create a flinch reaction and emotional feedback.
+
 
 ## Part 6: **Interaction instructions**
 Wait for the ambient soundtrack to begin.
 Press:
-0 = Netural
+0 = Neutural
 1 = Joy
 2 = Sorrow
 3 = Anger
+
+
 Hover the mouse over the organism to trigger a flinch reaction and interactive sound feedback. Click on the organism to interact. In the emotion of Joy, particles burst outward; in Sorrow, tears fall and create ripples; in Anger, laser beams are fired outward. Observe how the organism responds through changes in movement, colour, breathing rhythm, and heartbeat. Stay within the experience to witness automatic time-based lifecycle changes and emotional decay back to a neutral state after a period of inactivity.
+
 
 ## Part 7: **Putting It Together**
 All four mechanics work together in one interactive environment. Mouse movement and clicking allow users to interact with the abstract form directly. Audio creates sound feedback and changes visual reactions. Perlin noise and randomness make the movement feel organic and unpredictable. The time-based mechanic triggers automatic events, visual effects, and sound changes over time, helping the experience feel alive and always changing. Together, the mechanics create a connected emotional audiovisual experience through motion, interaction, sound, and atmosphere. 

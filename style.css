@@ -1,3 +1,11 @@
+/* Cross-platform font rendering normalisation */
+*, *::before, *::after {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
 html, body {
   margin: 0;
   padding: 0;
@@ -22,13 +30,14 @@ canvas {
 .title-text {
   position: absolute;
   top: 3%;
-  left: 14%;
+  left: 12.5%;
   transform: translateX(-50%);         /* true centre */
 
   /* https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/clamp */
-  font-size: clamp(24px, 3.5vw, 50px);    /* helps in resizing the text with to fit the window by creating a range */
+  font-size: clamp(18px, 2.8vw, 48px);    /* helps in resizing the text with to fit the window by creating a range */
   text-align: left;
-  line-height: 1.1;
+  line-height: 1.15;
+  white-space: nowrap;
 }
 
 /* formatting for description text top right corner */
@@ -36,9 +45,11 @@ canvas {
   position: absolute;
   top: 4%;
   right: 3%;
-  width: 18%;
-  font-size: clamp(8px, 40vw, 10px);     
+  width: clamp(200px, 22vw, 300px); 
+  font-size: clamp(8px, 0.75vw, 10px); 
+  line-height: 1.55;
   text-align: left;
+  overflow: visible;
 }
 
 .stats-bar {
@@ -46,13 +57,28 @@ canvas {
   top: 18%;
   left: 3%;
   width: 94%;
-  border-top: 1px solid #232323;
-  padding-top: 0.5%;
-  font-size: clamp(8px, 0.8vw, 15px);
+
+  /* creates a flexbox, which refers to a flexible container */
   display: flex;
-  justify-content: space-between;      /* evenly spaces all stats */
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  gap: 1%;
+
+  /* adding borders and padding */
+  border-top: 1px solid #232323;
   border-bottom: 1px solid #232323;
-  padding-bottom:0.5%;
+  padding-top: 0.4%;
+  padding-bottom: 0.4%;
+  
+  /* typography formating */
+  font-family: "Space Mono", "Courier New", monospace;
+  font-weight: 700;
+  font-size: clamp(7px, 0.7vw, 13px);
+  color: #232323;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 h1{
@@ -63,14 +89,14 @@ h1{
 }
 
 p{
-  font-family: "Space Mono", monospace;
+  font-family: "Courier New Bold", monospace;
   font-weight: 400;
   color: #232323;
   margin: 0;
 }
 
 .stats-bar {
-  font-family: "Space Mono", monospace;
+  font-family: "Courier New Bold", monospace;
   font-weight: 700;
   color: #232323;
   margin: 0;
