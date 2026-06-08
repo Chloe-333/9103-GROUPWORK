@@ -24,7 +24,6 @@ let beatStartTime = 0;
 const BEAT_DUR = 400;
 
 let emotionStartTime = 0;
-let emotionDecayDelay = 0;
 let isDecaying = false;
 let decayProgress = 0;
 
