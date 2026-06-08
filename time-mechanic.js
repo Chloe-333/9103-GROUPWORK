@@ -1,7 +1,14 @@
+// ACADEMIC INTEGRITY & AI ACKNOWLEDGEMENT:
+// This time-mechanic script was architected and developed independently to 
+// govern the organism's biological systems. Generative AI was utilized strictly 
+// as a logical sounding board to refactor the conditional branch structures (else if blocks) 
+// and to correct algorithmic edge cases regarding state truncation during the sudden transitions of emotional decay.
+
 // Time state variables
 let lifeStartTime;
 let lifecycleAlpha = 0;
 let lifecycleRadiusScale = 1.0;
+let growProgress = 0;
 
 const BIRTH_DUR = 10000;
 const GROW_DUR = 20000;
@@ -43,26 +50,45 @@ function updateTimeMechanic() {
   updateEmotionDecay();
 }
 
-// 1. Lifecycle: handles fade-in/out and sizing over time
+// 1. Lifecycle: Handles evolution over time
 function updateLifeCycle() {
   let age = millis() - lifeStartTime;
 
+  // Stage 1: Birth
   if (age < BIRTH_DUR) {
     lifecycleAlpha = map(age, 0, BIRTH_DUR, 0, 70);
     lifecycleRadiusScale = map(age, 0, BIRTH_DUR, 0.2, 1.0);
+    growProgress = 0; 
   } 
+  // Stage 2: Growth
+  else if (age < BIRTH_DUR + GROW_DUR) {
+    lifecycleAlpha = 70;
+    lifecycleRadiusScale = 1.0; // Size plateaus while internal features mature
+    
+    let growAge = age - BIRTH_DUR;
+    growProgress = growAge / GROW_DUR; 
+  }
+  // Stage 3: Maturation
   else if (age < BIRTH_DUR + GROW_DUR + MATURE_DUR) {
     lifecycleAlpha = 70;
     lifecycleRadiusScale = 1.0;
+    growProgress = 1.0;
   } 
+  // Stage 4: Senescence
   else {
     let ageStart = BIRTH_DUR + GROW_DUR + MATURE_DUR;
+    
     lifecycleAlpha = map(age, ageStart, ageStart + AGE_DUR, 70, 20);
     lifecycleAlpha = constrain(lifecycleAlpha, 20, 70);
 
     lifecycleRadiusScale = map(age, ageStart, ageStart + AGE_DUR, 1.0, 0.6);
     lifecycleRadiusScale = constrain(lifecycleRadiusScale, 0.6, 1.0);
+    growProgress = 1.0;
   }
+}
+
+function getGrowProgress() {
+  return growProgress;
 }
 
 // 2. Breathing: continuous loop based on emotion speed/depth
@@ -87,6 +113,9 @@ function updateBreathing() {
 }
 
 // 3. Heartbeat: sharp interval pulse
+// AI ACKNOWLEDGEMENT:
+// The conditional branch structure (else if blocks) determining emotion-specific 
+// heartbeat intervals and intensities was optimized with conceptual guidance from AI.
 function updateHeartbeat() {
   let beatInterval;
 
@@ -120,8 +149,10 @@ function updateHeartbeat() {
   }
 }
 
-// 4. Emotion Decay: timer to fade back to neutral
-//Refactored with assistance from Gemini AI to truncate overflowing sound assets and force smooth fallback.
+// AI ACKNOWLEDGEMENT: This specialized updateEmotionDecay function was 
+// refactored with the assistance of GenAI (Gemini). It solves an audio overflow
+// bug by setting a hard limit (107000ms) to force a smooth linear interpolation 
+// (via lerp/map) back to the neutral state, preventing user-experience drag.
 function updateEmotionDecay() {
   if (currentEmotion === 'neutral') {
     decayProgress = 0;
@@ -165,4 +196,8 @@ function getDecayedNoiseAmp(emotionAmp, neutralAmp) {
 
 function getLifecycleAlpha() {
   return lifecycleAlpha;
+}
+
+function getGrowProgress() {
+  return growProgress;
 }
