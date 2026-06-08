@@ -28,7 +28,7 @@ To start off with the project we settled on a cohesive visual language to mainta
 
 Further we began ideating and working out the interactions in meaningful ways.
 
-![An image of project script](READMEImages/ideation.png)
+![An image of project script](READMEImages/Ideation.png)
 
 ### Vision
     - *Picture 1*
